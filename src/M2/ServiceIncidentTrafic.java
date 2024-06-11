@@ -4,13 +4,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class ServiceVelib implements ServiceVelibInterface {
+public class ServiceIncidentTrafic implements ServiceIncidentTraficInterface {
 
-    public ServiceVelib() {
-    }
-    public String getVelibData() throws RemoteException {
-        String urlString = "https://transport.data.gouv.fr/gbfs/nancy/gbfs.json";
-        return fetchData(urlString);
+    public ServiceIncidentTrafic() {
     }
 
     public String getTrafficIncidents() throws RemoteException {
