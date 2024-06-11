@@ -1,9 +1,3 @@
-package M1;
-
-import classes.Restaurant;
-import DataBase.BD;
-import DataBase.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
