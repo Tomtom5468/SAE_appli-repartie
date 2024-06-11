@@ -24,4 +24,12 @@ public class Restaurant implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    /**
+     * Getter de l'attribut nom
+     * @return String
+     */
+    public String getNom() {
+        return nom;
+    }
 }

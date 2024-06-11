@@ -1,3 +1,4 @@
+import java.rmi.RemoteException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public List<Restaurant> getRestaurants() {
+    public List<Restaurant> getRestaurants()throws RemoteException{
         try{
             java.sql.Connection connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
 
@@ -37,7 +38,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public Restaurant getRestaurantById(int id) {
+    public Restaurant getRestaurantById(int id) throws RemoteException{
         try{
             java.sql.Connection connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
 
