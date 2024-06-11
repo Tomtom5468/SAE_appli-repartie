@@ -1,0 +1,28 @@
+@startuml
+
+package "Browser" {
+  [Map of Nancy]
+}
+
+database "Database" {
+  [Restaurants]
+}
+
+cloud "APIs" {
+  [Traffic Incidents]
+  [Velib Stations]
+}
+
+node "RMI Services" {
+  [m1]
+  [m2]
+  [m3]
+}
+
+Browser <-- m3 : HTTP Requests
+m3 --> m2 : RMI Requests
+m2 --> APIs : API Requests
+m1 --> Database : JDBC Connection
+m3 <-- m1 : RMI Requests
+
+@enduml

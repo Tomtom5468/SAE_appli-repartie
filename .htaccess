@@ -1,0 +1,14 @@
+RewriteEngine On
+
+#
+# RewriteBase indispensable sur webetu :
+# pour un projet sur webetu dans ~/www/repertoire-projet
+RewriteBase /www/micheli17u/SAE_appli-repartie
+
+
+#
+# Pour interdire l'accès aux sous-répertoires contenant du code
+# -> ~/www/repertoire-projet/src
+# -> ~/www/repertoire-projet/sql
+# -> etc...
+RewriteRule ^src/receipBD(/.*|)$ - [NC,F]
