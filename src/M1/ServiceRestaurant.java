@@ -136,4 +136,43 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
         }
     }
 
+    @Override
+    public boolean reserveRestaurant(String nom, String prenom, int nbConvives, String telephone, String date, int restaurantId) throws RemoteException{
+        Connection connection = null;
+        try{
+            connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
+            connection.setAutoCommit(false);
+
+            PreparedStatement insertStatement = connection.prepareStatement("insert into reservations values(?, ?, ?, ?, ?, ?)");
+            insertStatement.setString(1, nom);
+            insertStatement.setString(2, prenom);
+            insertStatement.setInt(3, nbConvives);
+            insertStatement.setString(4, telephone);
+            insertStatement.setString(5, date);
+            insertStatement.setInt(6, restaurantId);
+            insertStatement.executeUpdate();
+
+            connection.commit();
+            return true;
+        }catch (Exception e){
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback " + ex.getMessage());
+                }
+            }
+            System.out.println("Error during transaction " + e.getMessage());
+            return false;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error during connection close " + ex.getMessage());
+                }
+            }
+        }
+    }
+
 }
