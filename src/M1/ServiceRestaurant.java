@@ -1,10 +1,9 @@
 package M1;
 
 import classes.Restaurant;
-import receipBD.BD;
-import receipBD.RecupData;
+import DataBase.BD;
+import DataBase.Connection;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     @Override
     public List<Restaurant> getRestaurants() {
         try{
-            Connection connection = RecupData.connection(BD.USERNAME, BD.PASSWORD);
+            java.sql.Connection connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
 
             PreparedStatement insertStatement = connection.prepareStatement("select * from restaurants");
             ResultSet resultSet = insertStatement.executeQuery();
@@ -46,7 +45,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     @Override
     public Restaurant getRestaurantById(int id) {
         try{
-            Connection connection = RecupData.connection(BD.USERNAME, BD.PASSWORD);
+            java.sql.Connection connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
 
             PreparedStatement insertStatement = connection.prepareStatement("select * from restaurants where id = ?");
             insertStatement.setInt(1, id);

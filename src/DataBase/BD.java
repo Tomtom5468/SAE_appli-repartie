@@ -1,4 +1,4 @@
-package receipBD;
+package DataBase;
 
 import java.io.FileInputStream;
 import java.io.IOException;
