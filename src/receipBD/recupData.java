@@ -19,12 +19,9 @@ public class recupData {
 
     public static void main(String[] args){
         try{
-            Connection connection = connection("root","root");
+            Connection connection = connection(BD.USERNAME, BD.PASSWORD);
 
             PreparedStatement insertStatement = connection.prepareStatement("select * from restaurants");
-            /*insertStatement.setString(1, cat);
-            insertStatement.setString(2, dateDebut);
-            insertStatement.setInt(3, duree);*/
             ResultSet resultSet = insertStatement.executeQuery();
 
             while (resultSet.next()){
@@ -32,6 +29,7 @@ public class recupData {
                 for(int i=1;i<=resultSet.getMetaData().getColumnCount();i++)
                     System.out.print(resultSet.getString(i) + "\t\t");
             }
+
             connection.close();
         }catch (Exception e){
             System.out.println("Erreur de connexion " + e.getMessage());
