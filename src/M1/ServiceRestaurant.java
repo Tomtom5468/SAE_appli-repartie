@@ -1,6 +1,7 @@
 import java.rmi.RemoteException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,15 +12,16 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
     @Override
     public List<Restaurant> getRestaurants()throws RemoteException{
+        Connection connection = null;
         try{
-            java.sql.Connection connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
+            connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
+            connection.setAutoCommit(false);
 
             PreparedStatement insertStatement = connection.prepareStatement("select * from restaurants");
             ResultSet resultSet = insertStatement.executeQuery();
 
             List<Restaurant> restaurants = new ArrayList<>();
 
-            //on convertit chaque ligne en un objet
             while (resultSet.next()){
                 int id = resultSet.getInt(1);
                 String nom = resultSet.getString(2);
@@ -29,18 +31,35 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
                 Restaurant restaurant = new Restaurant(id, nom, adresse, latitude, longitude);
                 restaurants.add(restaurant);
             }
-            connection.close();
+            connection.commit();
             return restaurants;
         }catch (Exception e){
-            System.out.println("Erreur de connexion " + e.getMessage());
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback " + ex.getMessage());
+                }
+            }
+            System.out.println("Error during transaction " + e.getMessage());
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error during connection close " + ex.getMessage());
+                }
+            }
         }
     }
 
     @Override
     public Restaurant getRestaurantById(int id) throws RemoteException{
+        Connection connection = null;
         try{
-            java.sql.Connection connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
+            connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
+            connection.setAutoCommit(false);
 
             PreparedStatement insertStatement = connection.prepareStatement("select * from restaurants where id = ?");
             insertStatement.setInt(1, id);
@@ -56,11 +75,65 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
                 double longitude = resultSet.getDouble(5);
                 restaurant = new Restaurant(idR, nom, adresse, latitude, longitude);
             }
-            connection.close();
+            connection.commit();
             return restaurant;
         }catch (Exception e){
-            System.out.println("Erreur de connexion " + e.getMessage());
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback " + ex.getMessage());
+                }
+            }
+            System.out.println("Error during transaction " + e.getMessage());
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error during connection close " + ex.getMessage());
+                }
+            }
         }
     }
+
+    @Override
+    public boolean addRestaurant(Restaurant restaurant) throws RemoteException{
+        Connection connection = null;
+        try{
+            connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
+            connection.setAutoCommit(false);
+
+            PreparedStatement insertStatement = connection.prepareStatement("insert into restaurants values(?, ?, ?, ?, ?)");
+            insertStatement.setInt(1, restaurant.getId());
+            insertStatement.setString(2, restaurant.getNom());
+            insertStatement.setString(3, restaurant.getAdresse());
+            insertStatement.setDouble(4, restaurant.getLatitude());
+            insertStatement.setDouble(5, restaurant.getLongitude());
+            insertStatement.executeUpdate();
+
+            connection.commit();
+            return true;
+        }catch (Exception e){
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback " + ex.getMessage());
+                }
+            }
+            System.out.println("Error during transaction " + e.getMessage());
+            return false;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error during connection close " + ex.getMessage());
+                }
+            }
+        }
+    }
+
 }
