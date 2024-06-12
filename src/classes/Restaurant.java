@@ -64,4 +64,14 @@ public class Restaurant implements Serializable {
     public double getLongitude() {
         return longitude;
     }
+
+    public org.json.JSONObject toJson(){
+        org.json.JSONObject json = new org.json.JSONObject();
+        json.put("id", this.id);
+        json.put("nom", this.nom);
+        json.put("adresse", this.adresse);
+        json.put("latitude", this.latitude);
+        json.put("longitude", this.longitude);
+        return json;
+    }
 }
