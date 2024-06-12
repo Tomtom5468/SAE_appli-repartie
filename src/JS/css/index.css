@@ -45,6 +45,7 @@ body {
     margin-left: 60px;
     float: left; /* Pour aligner la carte à gauche */
     border-right: 1px solid #ccc; /* Bordure à droite */
+    order: 1;
 }
 #map {
     width: 100%;
@@ -52,7 +53,7 @@ body {
 }
 #info-box {
     width: 40%; /* Largeur de la boîte d'info */
-    height: 58vh; /* Hauteur de la boîte d'info */
+    height: 60vh; /* Hauteur de la boîte d'info */
     float: right; /* Pour aligner la boîte à droite */
     background-color: white; /* Couleur de fond */
     border-left: 1px solid #ccc; /* Bordure à gauche */
@@ -61,6 +62,7 @@ body {
     margin-top: 180px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
     overflow-y: auto; /* Ajouter une barre de défilement si nécessaire */
+    order: 1;
 }
 #info-box h2 {
     color: #333; /* Couleur du titre */
@@ -70,4 +72,49 @@ body {
 #info-box p {
     color: #666; /* Couleur du texte */
     font-size: 1rem; /* Taille du texte */
+}
+
+#map-container, #info-box {
+    float: none; /* Remove the float property */
+}
+
+#main-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#weather-container {
+    width: 100%;
+    order: 2;
+    display: flex;
+    flex-direction: column; /* Aligner les éléments verticalement */
+}
+
+#weather-info {
+    overflow-y: hidden; /* Pas de défilement horizontal */
+    white-space: normal; /* Le texte passe à la ligne suivante */
+    display: flex;
+    flex-direction: row; /* Aligner les éléments verticalement */
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%; /* Largeur complète pour éviter le défilement horizontal */
+}
+
+#weather-info div {
+    width: 100%; /* Largeur complète pour éviter le défilement horizontal */
+    height: auto; /* Hauteur automatique pour s'adapter au contenu */
+    padding: 10px;
+    margin: 5px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: left; /* Aligner le texte à gauche */
+    font-size: 14px; /* Taille de la police */
+    word-wrap: break-word; /* Pour les mots longs */
+    overflow: visible; /* Pas de défilement */
+}
+
+#weather-info div p {
+    margin: 5px 0; /* Espacement vertical entre les éléments */
 }
