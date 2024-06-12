@@ -12,7 +12,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
     @Override
     public List<Restaurant> getRestaurants()throws RemoteException{
-        Connection connection = null;
+        java.sql.Connection connection = null;
         try{
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
@@ -56,7 +56,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
     @Override
     public Restaurant getRestaurantById(int id) throws RemoteException{
-        Connection connection = null;
+        java.sql.Connection connection = null;
         try{
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
@@ -100,7 +100,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
     @Override
     public boolean addRestaurant(Restaurant restaurant) throws RemoteException{
-        Connection connection = null;
+        java.sql.Connection connection = null;
         try{
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
