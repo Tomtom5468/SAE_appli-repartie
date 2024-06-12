@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire de Réservation</title>
+  <link rel="stylesheet" href="/css/indexformulaire.css">
+</head>
+<body>
+<section class="top-bar">
+  <button id="acceuil-button"><img class="button-icon" src="../image/home.png" alt="Accueil"></button>
+  <button><img class="button-icon" src="../image/reservation.png" alt="Reservation"></button>
+  <button id="restaurant-button"><img class="button-icon" src="../image/restaurant.png" alt="Restaurant"></button>
+  <button>Rapport</button>
+</section>
+<div class="container">
+  <h1>Ajout de restaurant</h1>
+  <form action="traitement_formulaire.php" method="POST">
+    <div>
+      <label for="nom">Nom du restaurant :</label>
+      <input type="text" id="nom" name="nom" required>
+    </div>
+    <div>
+      <label for="telephone">Téléphone :</label>
+      <input type="tel" id="telephone" name="telephone">
+    </div>
+    <div>
+      <label for="adresse">Adresse :</label>
+      <textarea id="adresse" name="adresse" required></textarea>
+    </div>
+    <div>
+      <label for="description">Ville :</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
+    <button type="submit">Réserver</button>
+  </form>
+</div>
+<script src="../js/main.js"></script>
+</body>
+</html>

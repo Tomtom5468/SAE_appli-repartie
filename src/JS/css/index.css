@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Apple SD Gothic Neo"; /* Police de caractères */
+    background-color: #f0f0f0; /* Couleur de fond */
+}
+.top-bar {
+    background-color: #595986 ; /* Couleur de fond de la barre */
+    color: white; /* Couleur du texte */
+    padding: 10px; /* Espacement interne */
+    text-align: left; /* Aligner le texte à gauche */
+    position: fixed; /* Position fixe */
+    top: 0; /* Alignement au haut */
+    width: 100%; /* Pleine largeur */
+    z-index: 1000; /* Assure que la barre est au-dessus de tout */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
+    height: 60px;
+}
+.top-bar button {
+    width: 100px;
+    background-color: white; /* Couleur de fond des boutons */
+    color: black; /* Couleur du texte des boutons */
+    border: none; /* Supprime les bordures */
+    padding: 10px 20px; /* Espacement interne des boutons */
+    margin-right: 10px; /* Marge entre les boutons */
+    cursor: pointer; /* Curseur au survol */
+    border-radius: 5px; /* Bords arrondis */
+    transition: background-color 0.3s; /* Transition fluide */
+    height: 60px;
+}
+.top-bar button:hover {
+    background-color: #777; /* Couleur de fond des boutons au survol */
+}
+.top-bar img {
+    width: 20px; /* Redimensionner la largeur de l'image */
+    height: auto; /* Garder le ratio hauteur/largeur */
+    vertical-align: middle;
+}
+#map-container {
+    width: 50%; /* Largeur de votre choix */
+    height: 60vh; /* Hauteur de votre choix */
+    margin: auto; /* Pour centrer le conteneur */
+    position: relative;
+    margin-top: 180px; /* Pour éviter que la carte soit cachée par la barre */
+    margin-left: 60px;
+    float: left; /* Pour aligner la carte à gauche */
+    border-right: 1px solid #ccc; /* Bordure à droite */
+}
+#map {
+    width: 100%;
+    height: 100%;
+}
+#info-box {
+    width: 40%; /* Largeur de la boîte d'info */
+    height: 58vh; /* Hauteur de la boîte d'info */
+    float: right; /* Pour aligner la boîte à droite */
+    background-color: white; /* Couleur de fond */
+    border-left: 1px solid #ccc; /* Bordure à gauche */
+    padding: 10px; /* Espacement interne */
+    margin-right: 30px; /* Marge à gauche */
+    margin-top: 180px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
+    overflow-y: auto; /* Ajouter une barre de défilement si nécessaire */
+}
+#info-box h2 {
+    color: #333; /* Couleur du titre */
+    font-size: 1.5rem; /* Taille du titre */
+    margin-top: 0; /* Supprimer la marge supérieure par défaut */
+}
+#info-box p {
+    color: #666; /* Couleur du texte */
+    font-size: 1rem; /* Taille du texte */
+}
