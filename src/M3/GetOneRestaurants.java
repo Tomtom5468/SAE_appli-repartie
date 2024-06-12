@@ -27,7 +27,7 @@ public class GetOneRestaurants implements HttpHandler{
             }
             
             Registry reg = LocateRegistry.getRegistry("localhost", 54680);
-            ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("Restaurants");
+            ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
 
             String response = service.getRestaurantById(id).toJson().toString();
             exchange.sendResponseHeaders(200, response.getBytes().length);

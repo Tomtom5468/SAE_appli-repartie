@@ -9,12 +9,10 @@ public class LancerM2 {
         try {
             ServiceIncidentTrafic sit = new ServiceIncidentTrafic();
             ServiceIncidentTraficInterface siti = (ServiceIncidentTraficInterface) UnicastRemoteObject.exportObject(sit, 54600);
-            Registry reg = LocateRegistry.createRegistry(1099);
+            Registry reg = LocateRegistry.createRegistry(54190);
             reg.rebind("M2", siti);
         } catch (RemoteException e) {
             System.out.println("Erreur de création du serveur " + e.getMessage());
-        } catch (AccessException e) {
-            System.out.println("Erreur d'accès au serveur " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Erreur de connexion " + e.getMessage());
         }

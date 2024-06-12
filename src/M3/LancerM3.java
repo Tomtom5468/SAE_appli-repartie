@@ -10,6 +10,7 @@ public class LancerM3 {
 
             server.createContext("/GetAllResto", new GetAllRestaurants());
             server.createContext("/GetOneResto", new GetOneRestaurants());
+            server.createContext("/GetIncident",new GetAccident());
             server.setExecutor(null); // utilise le gestionnaire par défaut
             server.start();
             System.out.println("Server started on port 8000");

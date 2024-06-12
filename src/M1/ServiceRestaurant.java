@@ -138,7 +138,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
     @Override
     public boolean reserveRestaurant(String nom, String prenom, int nbConvives, String telephone, String date, int restaurantId) throws RemoteException{
-        Connection connection = null;
+        java.sql.Connection connection = null;
         try{
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);

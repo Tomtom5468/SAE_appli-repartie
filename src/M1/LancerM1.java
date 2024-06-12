@@ -11,7 +11,7 @@ public class LancerM1 {
             ServiceRestaurantInterface sri = (ServiceRestaurantInterface) UnicastRemoteObject.exportObject(sr, 54680);
 
             Registry reg = LocateRegistry.createRegistry(54680);
-            reg.rebind("Restaurants", sri);
+            reg.rebind("M1", sri);
         }catch (Exception e){
             System.out.println("Erreur de connexion " + e.getMessage());
         }
