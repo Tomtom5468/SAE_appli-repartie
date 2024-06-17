@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
 
 public class ServiceRestaurant implements ServiceRestaurantInterface{
 
@@ -11,7 +12,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public List<Restaurant> getRestaurants()throws RemoteException{
+    public String getRestaurants()throws RemoteException{
         java.sql.Connection connection = null;
         try{
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
@@ -32,7 +33,13 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
                 restaurants.add(restaurant);
             }
             connection.commit();
-            return restaurants;
+
+            JSONArray jsonRestaurants = new JSONArray();
+            for (Restaurant restaurant : restaurants) {
+                jsonRestaurants.put(restaurant.toJson());
+            }
+
+            return jsonRestaurants.toString();
         }catch (Exception e){
             if (connection != null) {
                 try {
@@ -42,7 +49,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
                 }
             }
             System.out.println("Error during transaction " + e.getMessage());
-            return null;
+            return "";
         } finally {
             if (connection != null) {
                 try {
@@ -55,7 +62,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public Restaurant getRestaurantById(int id) throws RemoteException{
+    public String getRestaurantById(int id) throws RemoteException{
         java.sql.Connection connection = null;
         try{
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
@@ -76,7 +83,8 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
                 restaurant = new Restaurant(idR, nom, adresse, latitude, longitude);
             }
             connection.commit();
-            return restaurant;
+
+            return restaurant.toJson().toString();
         }catch (Exception e){
             if (connection != null) {
                 try {
@@ -86,7 +94,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
                 }
             }
             System.out.println("Error during transaction " + e.getMessage());
-            return null;
+            return "";
         } finally {
             if (connection != null) {
                 try {

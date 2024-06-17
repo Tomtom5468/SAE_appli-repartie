@@ -26,8 +26,6 @@ public class GetAccident implements HttpHandler {
             ServiceIncidentTraficInterface service = (ServiceIncidentTraficInterface) reg.lookup("M2");
 
             String response = service.getTrafficIncidents();
-            JSONObject jsonAccidents = new JSONObject(response);
-            response = jsonAccidents.toString();
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
