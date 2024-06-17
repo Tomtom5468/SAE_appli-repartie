@@ -66,10 +66,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <p>Vélos disponibles: ${station.num_bikes_available}<br>Places de parking libres: ${station.num_docks_available}</p>
                                         <div>
                                             <a href="https://maps.google.com/?q=${stationInfo.lat},${stationInfo.lon}" target="_blank">
-                                                <img src="../image/GoogleMaps.png" alt="Google Maps" width="30" height="30">
+                                                <img src="../image/GoogleMaps.png" alt="Google Maps" width="24" height="22">
                                             </a>
                                             <a href="https://maps.apple.com/?daddr=${stationInfo.lat},${stationInfo.lon}" target="_blank">
-                                                <img src="../image/Apple-Plans.webp" alt="Apple Plans" width="30" height="30">
+                                                <img src="../image/Apple-Plans.webp" alt="Apple Plans" width="37" height="29">
                                             </a>
                                         </div>
                                     `;

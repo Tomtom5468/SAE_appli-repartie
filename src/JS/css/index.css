@@ -131,15 +131,17 @@ a:hover {
 
 .city-label {
     font-family: 'Roboto', Arial, sans-serif;
-    font-size: 12px;
+    font-size: 14px; /* Taille de la police */
     font-weight: bold;
     color: white;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
     border: 1px solid rgba(255, 255, 255, 0.8);
-    padding: 2px;
+    padding: 5px; /* Augmenter le padding pour plus de lisibilité */
     border-radius: 3px;
+    text-align: center; /* Centrer le texte */
+    white-space: nowrap; /* Empêcher le retour à la ligne */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Ajouter une ombre pour plus de contraste */
 }
-
 
 /* Ajoutez ce style dans votre fichier CSS, par exemple index.css */
 
