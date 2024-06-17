@@ -1,10 +1,13 @@
-var map = L.map('map').setView([48.6921, 6.1844], 13);
+document.addEventListener('DOMContentLoaded', function () {
+    // Initialisation de la carte Leaflet
+    var map = L.map('map').setView([48.6921, 6.1844], 13);
 
-L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-    maxZoom: 20,
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    attribution: 'Map data ©2023 Google'
-}).addTo(map);
+    // Utilisation de Google Maps Satellite
+    L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        attribution: 'Map data ©2023 Google'
+    }).addTo(map);
 
 fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
     .then(response => response.json())
@@ -47,21 +50,30 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
             }
         });
 
-        var cities = [
-            { name: "Nancy", coordinates: [48.6921, 6.1844] },
-            { name: "Vandœuvre-lès-Nancy", coordinates: [48.6667, 6.1833] },
-            { name: "Laxou", coordinates: [48.7, 6.15] },
-        ];
+            var cities = [
+                { name: "Nancy", coordinates: [48.6921, 6.1844] },
+                { name: "Vandœuvre-lès-Nancy", coordinates: [48.6667, 6.1833] },
+                { name: "Laxou", coordinates: [48.7, 6.15] },
+            ];
 
-        cities.forEach(function(city) {
-            L.marker(city.coordinates, {
-                icon: L.divIcon({
-                    className: 'city-label',
-                    html: `<div>${city.name}</div>`
-                })
-            }).addTo(map);
+            cities.forEach(function(city) {
+                L.marker(city.coordinates, {
+                    icon: L.divIcon({
+                        className: 'city-label',
+                        html: `<div>${city.name}</div>`
+                    })
+                }).addTo(map);
+            });
+        })
+        .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
+
+    // Récupération et affichage des restaurants
+    const apiUrl = 'http://localhost:8000/GetAllResto';
+    Restaurant.fetchRestaurants(apiUrl)
+        .then(restaurants => {
+            Restaurant.displayRestaurants(map, restaurants);
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'affichage des restaurants:', error);
         });
-    })
-    .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
-
-
+});

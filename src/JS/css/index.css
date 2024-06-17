@@ -4,6 +4,16 @@ body {
     font-family: "Apple SD Gothic Neo"; /* Police de caractères */
     background-color: #f0f0f0; /* Couleur de fond */
 }
+
+a:link {
+    color: inherit !important;
+    text-decoration: none;
+}
+
+a:hover {
+    transform: scale(1.1);
+}
+
 .top-bar {
     background-color: #595986 ; /* Couleur de fond de la barre */
     color: white; /* Couleur du texte */
@@ -14,10 +24,10 @@ body {
     width: 100%; /* Pleine largeur */
     z-index: 1000; /* Assure que la barre est au-dessus de tout */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
-    height: 60px;
+    height: 82px;
 }
 .top-bar button {
-    width: 100px;
+    width: 80px;
     background-color: white; /* Couleur de fond des boutons */
     color: black; /* Couleur du texte des boutons */
     border: none; /* Supprime les bordures */
@@ -32,7 +42,7 @@ body {
     background-color: #777; /* Couleur de fond des boutons au survol */
 }
 .top-bar img {
-    width: 20px; /* Redimensionner la largeur de l'image */
+    width: 40px; /* Largeur de l'image */
     height: auto; /* Garder le ratio hauteur/largeur */
     vertical-align: middle;
 }
