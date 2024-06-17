@@ -1,10 +1,11 @@
 class Restaurant {
-    constructor(id, nom, adresse, latitude, longitude) {
+    constructor(id, nom, adresse, latitude, longitude, lienImage) {
         this.id = id;
         this.nom = nom;
         this.adresse = adresse;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.lienImage = lienImage;
     }
 
     static fetchRestaurants(apiUrl) {
@@ -21,7 +22,8 @@ class Restaurant {
                     restaurant.nom,
                     restaurant.adresse,
                     restaurant.latitude,
-                    restaurant.longitude
+                    restaurant.longitude,
+                    restaurant.lienImage
                 ));
             })
             .catch(error => {
@@ -39,7 +41,11 @@ class Restaurant {
 
         restaurants.forEach(restaurant => {
             const marker = L.marker([restaurant.latitude, restaurant.longitude], { icon: customIcon }).addTo(map);
-            marker.bindPopup(`<h3>${restaurant.nom}</h3><p>${restaurant.adresse}</p>`);
-        });
+            marker.bindPopup(`
+                <h3>${restaurant.nom}</h3>
+                <p>${restaurant.adresse}</p>
+                <img src="${restaurant.lienImage}" alt="Photo du restaurant">
+                <p>${restaurant.longitude} ; ${restaurant.lienImage}</p>
+            `);});
     }
 }
