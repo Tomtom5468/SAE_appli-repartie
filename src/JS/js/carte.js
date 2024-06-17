@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 iconSize: [32, 32],
                 iconAnchor: [16, 16],
             });
+            var stationInfoMap = {};
             data.data.fr.feeds.forEach(function(feed) {
                 if (feed.name === 'station_information') {
                     fetch(feed.url)
@@ -22,21 +23,58 @@ document.addEventListener('DOMContentLoaded', function () {
                         .then(data => {
                             var stations = data.data.stations;
                             stations.forEach(function(station) {
+                                stationInfoMap[station.station_id] = {
+                                    name: station.name,
+                                    address: station.address,
+                                    lat: station.lat,
+                                    lon: station.lon
+                                };
                                 var marker = L.marker([station.lat, station.lon], {icon: customIcon}).addTo(map);
-                                marker.bindPopup(`<h3>${station.name}</h3><p>Adresse: ${station.address}</p>`);
+                                marker.bindPopup(`
+                                    <h3>${station.name}</h3>
+                                    <p>Adresse: ${station.address}</p>
+                                    <div id="station-info-${station.station_id}">
+                                        <!-- Les informations des vélos seront ajoutées ici -->
+                                    </div>
+                                    <div>
+                                        <a href="https://maps.google.com/?q=${station.lat},${station.lon}" target="_blank">
+                                            <img src="../image/GoogleMaps.png" alt="Google Maps" width="37" height="30">
+                                        </a>
+                                        <a href="https://maps.apple.com/?daddr=${station.lat},${station.lon}" target="_blank">
+                                            <img src="../image/Apple-Plans.webp" alt="Apple Plans" width="37" height="30">
+                                        </a>
+                                    </div>
+                                `);
                                 marker.id = station.station_id;
                             });
                         })
                         .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
                 }
+
                 if (feed.name === 'station_status') {
                     fetch(feed.url)
                         .then(response => response.json())
                         .then(data => {
                             var stations = data.data.stations;
                             stations.forEach(function(station) {
-                                var marker = map._layers[Object.keys(map._layers).find(key => map._layers[key].id === station.station_id)];
-                                marker.bindPopup(marker.getPopup().getContent() + `<p>Vélos disponibles: ${station.num_bikes_available}<br>Places de parking libres: ${station.num_docks_available}</p>`);
+                                if (stationInfoMap[station.station_id]) {
+                                    var stationInfo = stationInfoMap[station.station_id];
+                                    var marker = map._layers[Object.keys(map._layers).find(key => map._layers[key].id === station.station_id)];
+                                    var popupContent = `
+                                        <h3>${stationInfo.name}</h3>
+                                        <p>Adresse: ${stationInfo.address}</p>
+                                        <p>Vélos disponibles: ${station.num_bikes_available}<br>Places de parking libres: ${station.num_docks_available}</p>
+                                        <div>
+                                            <a href="https://maps.google.com/?q=${stationInfo.lat},${stationInfo.lon}" target="_blank">
+                                                <img src="../image/GoogleMaps.png" alt="Google Maps" width="30" height="30">
+                                            </a>
+                                            <a href="https://maps.apple.com/?daddr=${stationInfo.lat},${stationInfo.lon}" target="_blank">
+                                                <img src="../image/Apple-Plans.webp" alt="Apple Plans" width="30" height="30">
+                                            </a>
+                                        </div>
+                                    `;
+                                    marker.setPopupContent(popupContent);
+                                }
                             });
                         })
                         .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
