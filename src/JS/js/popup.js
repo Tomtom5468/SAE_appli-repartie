@@ -15,11 +15,33 @@ document.getElementById('reservation-form').addEventListener('submit', function 
     const time = document.getElementById('time').value;
     const people = document.getElementById('people').value;
     const restaurantName = document.getElementById('restaurant-name').textContent;
-
-    console.log('Réservation pour :', restaurantName);
-    console.log('Nom:', name);
-    console.log('Date:', date);
-    console.log('Heure:', time);
-    console.log('Nombre de personnes:', people);
-    closeReservationPopup();
+    // Créer un objet avec les données de réservation
+    const reservationData = {
+        name: name,
+        date: date,
+        time: time,
+        people: people,
+        restaurantName: restaurantName
+    };
+    // Envoyer les données de réservation à l'API
+    fetch('http://localhost:8000/AddReservation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reservationData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Réservation réussie!');
+                closeReservationPopup();
+            } else {
+                alert('Erreur lors de la réservation: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'envoi de la réservation:', error);
+            alert('Erreur lors de l\'envoi de la réservation.');
+        });
 });
