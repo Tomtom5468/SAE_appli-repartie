@@ -26,20 +26,21 @@
       <input type="text" id="nom" name="nom" required>
     </div>
     <div>
-      <label for="telephone">Téléphone :</label>
-      <input type="tel" id="telephone" name="telephone">
-    </div>
-    <div>
       <label for="adresse">Adresse :</label>
       <textarea id="adresse" name="adresse" required></textarea>
     </div>
     <div>
-      <label for="description">Ville :</label>
-      <textarea id="description" name="description"></textarea>
+      <label for="longitude">Longitude :</label>
+        <input type="number" id="longitude" name="longitude" required>
     </div>
-    <button type="submit">Réserver</button>
+    <div>
+      <label for="latitude">Latitude :</label>
+        <input type="number" id="latitude" name="latitude" required>
+    </div>
+    <button type="submit">Ajouter</button>
   </form>
 </div>
 <script src="../js/main.js"></script>
+<script src="../js/envoiFormAjoutResto.js"></script>
 </body>
 </html>
