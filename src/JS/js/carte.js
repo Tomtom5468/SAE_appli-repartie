@@ -29,7 +29,8 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
                         var stations = data.data.stations;
                         stations.forEach(function(station) {
                             var marker = L.marker([station.lat, station.lon], {icon: customIcon}).addTo(map);
-                            marker.bindPopup(`<h3>${station.name}</h3>`);
+                            marker.bindPopup(`<h3>${station.name}</h3>
+                                <p>Adresse: ${station.address}</p>`);
                             marker.id = station.station_id;
                         });
 
@@ -44,7 +45,7 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
                         stations.forEach(function(station) {
                             var marker = map._layers[Object.keys(map._layers).find(key => map._layers[key].id === station.station_id)];
                             marker.bindPopup(marker.getPopup().getContent() + `
-                                <p>Adresse: ${station.address}<br>
+                                <p>
                                 Vélos disponibles: ${station.num_bikes_available}
                                 <br>Places de parking libres: ${station.num_docks_available}</p>`);
                         });
