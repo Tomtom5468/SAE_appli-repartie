@@ -37,7 +37,7 @@ class Incident {
 
     static displayIncidents(map, incidents) {
         const customIcon = L.icon({
-            iconUrl: '../image/voiture_incident.png', // Assurez-vous que cette icône existe
+            iconUrl: '../image/incident.png', // Assurez-vous que cette icône existe
             iconSize: [32, 32],
             iconAnchor: [16, 16]
         });
