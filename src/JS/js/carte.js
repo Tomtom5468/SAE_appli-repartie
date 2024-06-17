@@ -43,7 +43,10 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
                         var stations = data.data.stations;
                         stations.forEach(function(station) {
                             var marker = map._layers[Object.keys(map._layers).find(key => map._layers[key].id === station.station_id)];
-                            marker.bindPopup(marker.getPopup().getContent() + `<p>Vélos disponibles: ${station.num_bikes_available}<br>Places de parking libres: ${station.num_docks_available}</p>`);
+                            marker.bindPopup(marker.getPopup().getContent() + `
+                                <p>Adresse: ${station.address}<br>
+                                Vélos disponibles: ${station.num_bikes_available}
+                                <br>Places de parking libres: ${station.num_docks_available}</p>`);
                         });
                     })
                     .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
