@@ -7,59 +7,57 @@ document.addEventListener('DOMContentLoaded', function () {
         attribution: 'Map data ©2023 Google'
     }).addTo(map);
 
+    var velibMarkers = [];
+    var restaurantMarkers = [];
+    var incidentMarkers = [];
+    var velibMarkersVisible = false;
+    var restaurantMarkersVisible = false;
+    var incidentMarkersVisible = false;
+
     fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
         .then(response => response.json())
         .then(data => {
-            var customIcon = L.icon({
+            var customVelibIcon = L.icon({
                 iconUrl: '../image/velo-icon.png',
                 iconSize: [32, 32],
                 iconAnchor: [16, 16],
             });
             var stationInfoMap = {};
-            data.data.fr.feeds.forEach(function(feed) {
-                if (feed.name === 'station_information') {
-                    fetch(feed.url)
-                        .then(response => response.json())
-                        .then(data => {
-                            var stations = data.data.stations;
-                            stations.forEach(function(station) {
-                                stationInfoMap[station.station_id] = {
-                                    name: station.name,
-                                    address: station.address,
-                                    lat: station.lat,
-                                    lon: station.lon
-                                };
-                                var marker = L.marker([station.lat, station.lon], {icon: customIcon}).addTo(map);
-                                marker.bindPopup(`
-                                    <h3>${station.name}</h3>
-                                    <p>Adresse: ${station.address}</p>
-                                    <div id="station-info-${station.station_id}">
-                                        <!-- Les informations des vélos seront ajoutées ici -->
-                                    </div>
-                                    <div>
-                                        <a href="https://maps.google.com/?q=${station.lat},${station.lon}" target="_blank">
-                                            <img src="../image/GoogleMaps.png" alt="Google Maps" width="37" height="30">
-                                        </a>
-                                        <a href="https://maps.apple.com/?daddr=${station.lat},${station.lon}" target="_blank">
-                                            <img src="../image/Apple-Plans.webp" alt="Apple Plans" width="37" height="30">
-                                        </a>
-                                    </div>
-                                `);
-                                marker.id = station.station_id;
-                            });
-                        })
-                        .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
-                }
 
-                if (feed.name === 'station_status') {
-                    fetch(feed.url)
-                        .then(response => response.json())
-                        .then(data => {
-                            var stations = data.data.stations;
-                            stations.forEach(function(station) {
-                                if (stationInfoMap[station.station_id]) {
+            const stationInfoFeed = data.data.fr.feeds.find(feed => feed.name === 'station_information');
+            const stationStatusFeed = data.data.fr.feeds.find(feed => feed.name === 'station_status');
+
+            if (stationInfoFeed) {
+                fetch(stationInfoFeed.url)
+                    .then(response => response.json())
+                    .then(infoData => {
+                        var stations = infoData.data.stations;
+                        stations.forEach(function (station) {
+                            stationInfoMap[station.station_id] = {
+                                name: station.name,
+                                address: station.address,
+                                lat: station.lat,
+                                lon: station.lon
+                            };
+                            var marker = L.marker([station.lat, station.lon], { icon: customVelibIcon });
+                            marker.bindPopup(`<h3>${station.name}</h3><p>Adresse: ${station.address}</p><div id="station-info-${station.station_id}"></div>`);
+                            marker.id = station.station_id;
+                            velibMarkers.push(marker);
+                        });
+                    })
+                    .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
+            }
+
+            if (stationStatusFeed) {
+                fetch(stationStatusFeed.url)
+                    .then(response => response.json())
+                    .then(statusData => {
+                        var stations = statusData.data.stations;
+                        stations.forEach(function (station) {
+                            if (stationInfoMap[station.station_id]) {
+                                var marker = velibMarkers.find(m => m.id === station.station_id);
+                                if (marker) {
                                     var stationInfo = stationInfoMap[station.station_id];
-                                    var marker = map._layers[Object.keys(map._layers).find(key => map._layers[key].id === station.station_id)];
                                     var popupContent = `
                                         <h3>${stationInfo.name}</h3>
                                         <p>Adresse: ${stationInfo.address}</p>
@@ -75,52 +73,89 @@ document.addEventListener('DOMContentLoaded', function () {
                                     `;
                                     marker.setPopupContent(popupContent);
                                 }
-                            });
-                        })
-                        .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
-                }
-            });
-
-            var cities = [
-                { name: "Nancy", coordinates: [48.6921, 6.1844] },
-                { name: "Vandœuvre-lès-Nancy", coordinates: [48.6667, 6.1833] },
-                { name: "Laxou", coordinates: [48.7, 6.15] },
-            ];
-
-            cities.forEach(function(city) {
-                L.marker(city.coordinates, {
-                    icon: L.divIcon({
-                        className: 'city-label',
-                        html: `<div>${city.name}</div>`
+                            }
+                        });
                     })
-                }).addTo(map);
-            });
+                    .catch(error => console.error('Erreur lors du chargement des données des statuts des stations Vélib:', error));
+            }
         })
         .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
+
+    document.getElementById('toggle-velib').addEventListener('click', function () {
+        if (velibMarkersVisible) {
+            velibMarkers.forEach(marker => map.removeLayer(marker));
+        } else {
+            velibMarkers.forEach(marker => marker.addTo(map));
+        }
+        velibMarkersVisible = !velibMarkersVisible;
+    });
+
+    const apiUrlRestaurant = 'http://localhost:8000/GetAllResto';
+    Restaurant.fetchRestaurants(apiUrlRestaurant)
+        .then(restaurants => {
+            const customRestaurantIcon = L.icon({
+                iconUrl: '../image/restaurantcarte.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            restaurants.forEach(restaurant => {
+                const marker = L.marker([restaurant.latitude, restaurant.longitude], { icon: customRestaurantIcon });
+                marker.bindPopup(`
+                    <h3>${restaurant.nom}</h3>
+                    <p>${restaurant.adresse}</p>
+                    <img src="${restaurant.lienImage}" alt="Photo du restaurant">
+                    <button class="reservation-button" onclick="openReservationPopup('${restaurant.id}', '${restaurant.nom}')">Réserver</button>
+                `);
+                restaurantMarkers.push(marker);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'affichage des restaurants:', error);
+        });
+
+    document.getElementById('toggle-restaurant').addEventListener('click', function () {
+        if (restaurantMarkersVisible) {
+            restaurantMarkers.forEach(marker => map.removeLayer(marker));
+        } else {
+            restaurantMarkers.forEach(marker => marker.addTo(map));
+        }
+        restaurantMarkersVisible = !restaurantMarkersVisible;
+    });
+
+    const apiUrlIncident = 'http://localhost:8000/GetIncident';
+    Incident.fetchIncidents(apiUrlIncident)
+        .then(incidents => {
+            const customIncidentIcon = L.icon({
+                iconUrl: '../image/incident.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            incidents.forEach(incident => {
+                const marker = L.marker([incident.latitude, incident.longitude], { icon: customIncidentIcon });
+                marker.bindPopup(`<h3>${incident.shortDescription}</h3><p>${incident.description}</p><p>${incident.street}</p><p>Début: ${incident.startTime}<br>Fin: ${incident.endTime}</p>`);
+                incidentMarkers.push(marker);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'affichage des incidents:', error);
+        });
+
+    document.getElementById('toggle-incident').addEventListener('click', function () {
+        if (incidentMarkersVisible) {
+            incidentMarkers.forEach(marker => map.removeLayer(marker));
+        } else {
+            incidentMarkers.forEach(marker => marker.addTo(map));
+        }
+        incidentMarkersVisible = !incidentMarkersVisible;
+    });
 
     map.on('click', function(e) {
         var lat = e.latlng.lat;
         var lon = e.latlng.lng;
         showAddRestaurantPopup(lat, lon, map);
     });
-
-    const apiUrl = 'http://localhost:8000/GetAllResto';
-    Restaurant.fetchRestaurants(apiUrl)
-        .then(restaurants => {
-            Restaurant.displayRestaurants(map, restaurants);
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'affichage des restaurants:', error);
-        });
-
-    const apiUrlIncident = 'http://localhost:8000/GetIncident';
-    Incident.fetchIncidents(apiUrlIncident)
-        .then(incidents => {
-            Incident.displayIncidents(map, incidents);
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'affichage des incidents:', error);
-        });
 });
 
 function showAddRestaurantPopup(lat, lon, map) {
