@@ -9,12 +9,12 @@ body {
     text-align: center;
 }
 form {
-    width: 100%; /* Ajustez la largeur selon vos préférences */
+    width: 80%; /* Ajustez la largeur selon vos préférences */
     padding: 20px;
     background-color: #f3f3f3;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    margin: 0 auto; /* Centrer la boîte horizontalement */
+    margin: 0 auto;
 }
 h1 {
     margin-top: 0;
@@ -26,55 +26,9 @@ label {
     font-weight: bold;
 }
 input, textarea {
-    width: calc(100% - 16px); /* Largeur ajustée pour inclure la marge intérieure */
+    width: calc(100% - 16px);
     padding: 8px;
     border-radius: 5px;
-    margin: 8px; /* Ajouter une marge intérieure autour des zones de texte */
+    margin: 8px;
     border: 1px solid black;
-}
-button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
-}
-button:hover {
-    background-color: #0056b3;
-}
-
-
-.top-bar {
-    background-color: black ; /* Couleur de fond de la barre */
-    color: white; /* Couleur du texte */
-    padding: 10px; /* Espacement interne */
-    text-align: left; /* Aligner le texte à gauche */
-    position: fixed; /* Position fixe */
-    top: 0; /* Alignement au haut */
-    width: 100%; /* Pleine largeur */
-    z-index: 1000; /* Assure que la barre est au-dessus de tout */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
-    height: 60px;
-}
-.top-bar button {
-    width: 100px;
-    background-color: white; /* Couleur de fond des boutons */
-    color: black; /* Couleur du texte des boutons */
-    border: none; /* Supprime les bordures */
-    padding: 10px 20px; /* Espacement interne des boutons */
-    margin-right: 10px; /* Marge entre les boutons */
-    cursor: pointer; /* Curseur au survol */
-    border-radius: 5px; /* Bords arrondis */
-    transition: background-color 0.3s; /* Transition fluide */
-    height: 60px;
-}
-.top-bar button:hover {
-    background-color: #777; /* Couleur de fond des boutons au survol */
-}
-.top-bar img {
-    width: 20px; /* Redimensionner la largeur de l'image */
-    height: auto; /* Garder le ratio hauteur/largeur */
-    vertical-align: middle;
 }

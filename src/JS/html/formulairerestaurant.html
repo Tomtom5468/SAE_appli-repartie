@@ -1,18 +1,23 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulaire de Réservation</title>
-  <link rel="stylesheet" href="/css/indexformulaire.css">
+  <title>Carte Vélib Nancy - Vue Satellite</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/indexformulaire.css">
+
 </head>
 <body>
 <section class="top-bar">
-  <button id="acceuil-button"><img class="button-icon" src="../image/home.png" alt="Accueil"></button>
-  <button><img class="button-icon" src="../image/reservation.png" alt="Reservation"></button>
-  <button id="restaurant-button"><img class="button-icon" src="../image/restaurant.png" alt="Restaurant"></button>
-  <button>Rapport</button>
+  <button id="acceuil-button" data-toggle="tooltip" title="Accueil"><img class="button-icon" src="../image/home.svg" alt="Accueil"></button>
+  <button data-toggle="tooltip" title="Réservation"><img class="button-icon" src="../image/reservation.png" alt="Reservation"></button>
+  <button id="restaurant-button" data-toggle="tooltip" title="Restaurant"><img class="button-icon" src="../image/restaurant.png" alt="Restaurant"></button>
+  <a href="rapport.html"><button data-toggle="tooltip" title="Rapport"><img class="button-icon" src="../image/rapport.svg"></button></a>
 </section>
+
 <div class="container">
   <h1>Ajout de restaurant</h1>
   <form action="traitement_formulaire.php" method="POST">
