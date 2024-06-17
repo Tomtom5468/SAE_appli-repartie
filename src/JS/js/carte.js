@@ -13,7 +13,7 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
     .then(response => response.json())
     .then(data => {
         var customIcon = L.icon({
-            iconUrl: '../image/velo-icon.png', // Chemin vers l'icône de vélo
+            iconUrl: '../image/velo-icon.png', // Chemin vexrs l'icône de vélo
             iconSize: [32, 32], // Taille de l'icône
             iconAnchor: [16, 16], // Point d'ancrage de l'icône
         });
