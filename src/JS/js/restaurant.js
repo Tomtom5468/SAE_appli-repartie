@@ -46,6 +46,7 @@ class Restaurant {
                 <p>${restaurant.adresse}</p>
                 <img src="${restaurant.lienImage}" alt="Photo du restaurant">
                 <p>${restaurant.longitude} ; ${restaurant.lienImage}</p>
+                 <button class="reservation-button" onclick="openReservationPopup('${restaurant.id}', '${restaurant.nom}')">Réserver</button>
             `);});
     }
 }
