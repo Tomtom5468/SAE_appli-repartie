@@ -6,14 +6,13 @@
     <title>Carte Vélib Nancy - Vue Satellite</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <section class="top-bar">
-    <button id="acceuil-button" data-toggle="tooltip" title="Accueil"><img class="button-icon" src="../image/home.svg" alt="Accueil"></button>
-    <button data-toggle="tooltip" title="Réservation"><img class="button-icon" src="../image/reservation.png" alt="Reservation"></button>
-    <button id="restaurant-button" data-toggle="tooltip" title="Restaurant"><img class="button-icon" src="../image/restaurant.png" alt="Restaurant"></button>
-    <a href="rapport.html"><button data-toggle="tooltip" title="Rapport"><img class="button-icon" src="../image/rapport.svg"></button></a>
+    <button id="acceuil-button"><img class="button-icon" src="../image/home.png" alt="Accueil"></button>
+    <button><img class="button-icon" src="../image/reservation.png" alt="Reservation"></button>
+    <button id="restaurant-button"><img class="button-icon" src="../image/restaurant.png" alt="Restaurant"></button>
+    <button>RAPPORT</button>
 </section>
 
 <div id="main-container">
@@ -25,21 +24,20 @@
         <h2>Information</h2>
         <p><img src="../image/velo-icon.png" alt="Vélib" style="width: 20px;"> Vélib</p>
         <p><img src="../image/restaurantcarte.png" alt="Vélib" style="width: 20px;"> Restaurant</p>
+        <p><img src="../image/voiture_incident.png" alt="Vélib" style="width: 20px;"> Incident routier</p>
     </div>
 
-    <div  id="weather-container" class="pt-5">
+    <div id="weather-container">
         <h2>Méteo à Nancy</h2>
         <div id="weather-info"></div>
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="../js/restaurant.js"></script>
+<script src="../js/incident.js"></script>
 <script src="../js/carte.js"></script>
 <script src="../js/main.js"></script>
 <script src="../js/meteo.js"></script>
-<script src="../js/restaurant.js"></script>
-
 </body>
 </html>
