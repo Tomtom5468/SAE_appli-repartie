@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const currentWeatherHTML = `
                 <h3>Météo actuelle</h3>
                 <p><img src="${currentIcon}" alt="Icône météo"> ${currentTemperature}°C, ${currentDescription}</p>
-                <h3>Prévisions pour les prochaines heures</h3>
+                <h3>Météo sur la journée</h3>
             `;
 
             weatherTitle.insertAdjacentHTML('afterend', currentWeatherHTML);
