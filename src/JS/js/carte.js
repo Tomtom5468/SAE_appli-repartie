@@ -61,13 +61,13 @@ document.addEventListener('DOMContentLoaded', function () {
                                     var popupContent = `
                                         <h3>${stationInfo.name}</h3>
                                         <p>Adresse: ${stationInfo.address}</p>
-                                        <p>Vélos disponibles: ${station.num_bikes_available}<br>Places de parking libres: ${station.num_docks_available}</p>
+                                        <p>Vélos disponibles: ${station.num_bikes_available}<br>Places de stationnement de vélo libres : ${station.num_docks_available}</p>
                                         <div>
                                             <a href="https://maps.google.com/?q=${stationInfo.lat},${stationInfo.lon}" target="_blank">
                                                 <img src="../image/GoogleMaps.png" alt="Google Maps" width="24" height="22">
                                             </a>
                                             <a href="https://maps.apple.com/?daddr=${stationInfo.lat},${stationInfo.lon}" target="_blank">
-                                                <img src="../image/Apple-Plans.webp" alt="Apple Plans" width="37" height="29">
+                                                <img src="../image/Apple-Plans.webp" alt="Apple Plans" width="40" height="29">
                                             </a>
                                         </div>
                                     `;
