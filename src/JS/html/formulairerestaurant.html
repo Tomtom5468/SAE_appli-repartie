@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carte Vélib Nancy - Vue Satellite</title>
+  <title>Restaurant</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="../css/index.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/indexformulaire.css">
-
 </head>
 <body>
 <section class="top-bar">
@@ -20,7 +19,7 @@
 
 <div class="container">
   <h1>Ajout de restaurant</h1>
-  <form action="traitement_formulaire.php" method="POST">
+  <form id="restaurant-form" action="traitement_formulaire.php" method="POST">
     <div>
       <label for="nom">Nom du restaurant :</label>
       <input type="text" id="nom" name="nom" required>
@@ -31,11 +30,11 @@
     </div>
     <div>
       <label for="longitude">Longitude :</label>
-        <input type="number" id="longitude" name="longitude" required>
+      <input type="number" id="longitude" name="longitude" required>
     </div>
     <div>
       <label for="latitude">Latitude :</label>
-        <input type="number" id="latitude" name="latitude" required>
+      <input type="number" id="latitude" name="latitude" required>
     </div>
     <button type="submit">Ajouter</button>
   </form>
