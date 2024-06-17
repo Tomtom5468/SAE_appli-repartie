@@ -129,6 +129,16 @@ a:hover {
     margin: 5px 0; /* Espacement vertical entre les éléments */
 }
 
+.city-label {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    padding: 2px;
+    border-radius: 3px;
+}
 
 
 /* Ajoutez ce style dans votre fichier CSS, par exemple index.css */

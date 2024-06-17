@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialisation de la carte Leaflet
     var map = L.map('map').setView([48.6921, 6.1844], 13);
-    // Utilisation de Google Maps Satellite
+
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -12,9 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             var customIcon = L.icon({
-                iconUrl: '../image/velo-icon.png', // Chemin vers l'icône de vélo
-                iconSize: [32, 32], // Taille de l'icône
-                iconAnchor: [16, 16], // Point d'ancrage de l'icône
+                iconUrl: '../image/velo-icon.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16],
             });
             data.data.fr.feeds.forEach(function(feed) {
                 if (feed.name === 'station_information') {
@@ -61,15 +60,12 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
 
-    // Détection des clics sur la carte pour ajouter un restaurant
     map.on('click', function(e) {
         var lat = e.latlng.lat;
         var lon = e.latlng.lng;
-        // Afficher le formulaire de popup pour ajouter un restaurant
         showAddRestaurantPopup(lat, lon, map);
     });
 
-    // Récupération et affichage des restaurants
     const apiUrl = 'http://localhost:8000/GetAllResto';
     Restaurant.fetchRestaurants(apiUrl)
         .then(restaurants => {
@@ -79,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Erreur lors de l\'affichage des restaurants:', error);
         });
 
-    // Récupération et affichage des incidents
     const apiUrlIncident = 'http://localhost:8000/GetIncident';
     Incident.fetchIncidents(apiUrlIncident)
         .then(incidents => {
@@ -122,7 +117,6 @@ function showAddRestaurantPopup(lat, lon, map) {
 
     document.getElementById('add-restaurant-form').addEventListener('submit', function(event) {
         event.preventDefault();
-        // Envoi du formulaire
         var formData = new FormData(event.target);
         fetch('http://localhost:8000/AddRestaurant', {
             method: 'POST',
@@ -140,7 +134,6 @@ function showAddRestaurantPopup(lat, lon, map) {
             .then(data => {
                 alert('Restaurant ajouté avec succès');
                 map.closePopup();
-                // Optionnel: Rafraîchir la liste des restaurants
                 const apiUrl = 'http://localhost:8000/GetAllResto';
                 Restaurant.fetchRestaurants(apiUrl)
                     .then(restaurants => {
