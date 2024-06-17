@@ -80,4 +80,14 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
         .catch(error => {
             console.error('Erreur lors de l\'affichage des restaurants:', error);
         });
+
+    // Récupération et affichage des incidents
+    const apiUrlIncident = 'http://localhost:8000/GetIncident';
+    Incident.fetchIncidents(apiUrlIncident)
+        .then(incidents => {
+            Incident.displayIncidents(map, incidents);
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'affichage des incidents:', error);
+        });
 });
