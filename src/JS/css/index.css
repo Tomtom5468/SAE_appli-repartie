@@ -128,3 +128,42 @@ a:hover {
 #weather-info div p {
     margin: 5px 0; /* Espacement vertical entre les éléments */
 }
+
+
+
+/* Ajoutez ce style dans votre fichier CSS, par exemple index.css */
+
+.popup-title {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+}
+
+.popup-form {
+    width: 100%;
+}
+
+.popup-form .form-group {
+    margin-bottom: 10px;
+}
+
+.popup-form .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+}
+
+.popup-form .btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.popup-form .btn:hover {
+    background-color: #0056b3;
+}

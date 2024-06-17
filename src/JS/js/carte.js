@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Initialisation de la carte Leaflet
     var map = L.map('map').setView([48.6921, 6.1844], 13);
-
     // Utilisation de Google Maps Satellite
     L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
         maxZoom: 20,
@@ -9,50 +8,41 @@ document.addEventListener('DOMContentLoaded', function () {
         attribution: 'Map data ©2023 Google'
     }).addTo(map);
 
-fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
-    .then(response => response.json())
-    .then(data => {
-        var customIcon = L.icon({
-            iconUrl: '../image/velo-icon.png', // Chemin vexrs l'icône de vélo
-            iconSize: [32, 32], // Taille de l'icône
-            iconAnchor: [16, 16], // Point d'ancrage de l'icône
-        });
-        // data.data.stations.forEach(function(station) {
-        //     var marker = L.marker([station.lat, station.lon], {icon: customIcon}).addTo(map);
-        //     marker.bindPopup(`<h3>${station.name}</h3><p>Vélos disponibles: ${station.num_bikes_available}<br>Places de parking libres: ${station.num_docks_available}</p>`);
-        // });
-        data.data.fr.feeds.forEach(function(feed) {
-            if (feed.name === 'station_information') {
-                fetch(feed.url)
-                    .then(response => response.json())
-                    .then(data => {
-                        var stations = data.data.stations;
-                        stations.forEach(function(station) {
-                            var marker = L.marker([station.lat, station.lon], {icon: customIcon}).addTo(map);
-                            marker.bindPopup(`<h3>${station.name}</h3>
-                                <p>Adresse: ${station.address}</p>`);
-                            marker.id = station.station_id;
-                        });
-
-                    })
-                    .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
-            }
-            if (feed.name === 'station_status') {
-                fetch(feed.url)
-                    .then(response => response.json())
-                    .then(data => {
-                        var stations = data.data.stations;
-                        stations.forEach(function(station) {
-                            var marker = map._layers[Object.keys(map._layers).find(key => map._layers[key].id === station.station_id)];
-                            marker.bindPopup(marker.getPopup().getContent() + `
-                                <p>
-                                Vélos disponibles: ${station.num_bikes_available}
-                                <br>Places de parking libres: ${station.num_docks_available}</p>`);
-                        });
-                    })
-                    .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
-            }
-        });
+    fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
+        .then(response => response.json())
+        .then(data => {
+            var customIcon = L.icon({
+                iconUrl: '../image/velo-icon.png', // Chemin vers l'icône de vélo
+                iconSize: [32, 32], // Taille de l'icône
+                iconAnchor: [16, 16], // Point d'ancrage de l'icône
+            });
+            data.data.fr.feeds.forEach(function(feed) {
+                if (feed.name === 'station_information') {
+                    fetch(feed.url)
+                        .then(response => response.json())
+                        .then(data => {
+                            var stations = data.data.stations;
+                            stations.forEach(function(station) {
+                                var marker = L.marker([station.lat, station.lon], {icon: customIcon}).addTo(map);
+                                marker.bindPopup(`<h3>${station.name}</h3><p>Adresse: ${station.address}</p>`);
+                                marker.id = station.station_id;
+                            });
+                        })
+                        .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
+                }
+                if (feed.name === 'station_status') {
+                    fetch(feed.url)
+                        .then(response => response.json())
+                        .then(data => {
+                            var stations = data.data.stations;
+                            stations.forEach(function(station) {
+                                var marker = map._layers[Object.keys(map._layers).find(key => map._layers[key].id === station.station_id)];
+                                marker.bindPopup(marker.getPopup().getContent() + `<p>Vélos disponibles: ${station.num_bikes_available}<br>Places de parking libres: ${station.num_docks_available}</p>`);
+                            });
+                        })
+                        .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
+                }
+            });
 
             var cities = [
                 { name: "Nancy", coordinates: [48.6921, 6.1844] },
@@ -70,6 +60,14 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
             });
         })
         .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
+
+    // Détection des clics sur la carte pour ajouter un restaurant
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lon = e.latlng.lng;
+        // Afficher le formulaire de popup pour ajouter un restaurant
+        showAddRestaurantPopup(lat, lon, map);
+    });
 
     // Récupération et affichage des restaurants
     const apiUrl = 'http://localhost:8000/GetAllResto';
@@ -91,3 +89,69 @@ fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
             console.error('Erreur lors de l\'affichage des incidents:', error);
         });
 });
+
+function showAddRestaurantPopup(lat, lon, map) {
+    var popupContent = `
+        <h3 class="popup-title">Ajouter un Restaurant</h3>
+        <form id="add-restaurant-form" class="popup-form">
+            <div class="form-group">
+                <label for="nom">Nom :</label>
+                <input type="text" class="form-control" id="nom" name="nom" required>
+            </div>
+            <div class="form-group">
+                <label for="adresse">Adresse :</label>
+                <input type="text" class="form-control" id="adresse" name="adresse" required>
+            </div>
+            <div class="form-group">
+                <label for="longitude">Longitude :</label>
+                <input type="text" class="form-control" id="longitude" name="longitude" value="${lon}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="latitude">Latitude :</label>
+                <input type="text" class="form-control" id="latitude" name="latitude" value="${lat}" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+    `;
+
+    var popup = L.popup()
+        .setLatLng([lat, lon])
+        .setContent(popupContent);
+
+    map.openPopup(popup);
+
+    document.getElementById('add-restaurant-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Envoi du formulaire
+        var formData = new FormData(event.target);
+        fetch('http://localhost:8000/AddRestaurant', {
+            method: 'POST',
+            body: JSON.stringify({
+                nom: formData.get('nom'),
+                adresse: formData.get('adresse'),
+                latitude: formData.get('latitude'),
+                longitude: formData.get('longitude')
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('Restaurant ajouté avec succès');
+                map.closePopup();
+                // Optionnel: Rafraîchir la liste des restaurants
+                const apiUrl = 'http://localhost:8000/GetAllResto';
+                Restaurant.fetchRestaurants(apiUrl)
+                    .then(restaurants => {
+                        Restaurant.displayRestaurants(map, restaurants);
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de l\'affichage des restaurants:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'ajout du restaurant:', error);
+            });
+    });
+}
