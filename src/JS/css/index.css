@@ -73,19 +73,39 @@ a:hover {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
     overflow-y: auto; /* Ajouter une barre de défilement si nécessaire */
     order: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 #info-box h2 {
     color: #333; /* Couleur du titre */
     font-size: 1.5rem; /* Taille du titre */
     margin-top: 0; /* Supprimer la marge supérieure par défaut */
+    text-align: center; /* Centrer le titre */
+}
+.info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0; /* Couleur de fond de la boîte */
+    border: 1px solid #ccc; /* Bordure */
+    padding: 10px; /* Espacement interne */
+    margin: 10px; /* Marge autour de chaque boîte */
+    border-radius: 5px; /* Coins arrondis */
+    width: 80%; /* Largeur des boîtes */
+}
+.info-icon {
+    width: 50px; /* Taille de l'icône */
+    height: auto; /* Conserver le ratio */
+    cursor: pointer; /* Changement de curseur */
 }
 #info-box p {
     color: #666; /* Couleur du texte */
     font-size: 1rem; /* Taille du texte */
-}
-
-#map-container, #info-box {
-    float: none; /* Remove the float property */
+    margin: 5px 0 0 0; /* Ajustement de la marge */
+    text-align: center; /* Centrer le texte */
 }
 
 #main-container {
@@ -143,7 +163,7 @@ a:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Ajouter une ombre pour plus de contraste */
 }
 
-/* Ajoutez ce style dans votre fichier CSS, par exemple index.css */
+/* Styles pour le popup de réservation */
 
 .popup-title {
     margin-bottom: 15px;
