@@ -107,18 +107,27 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public boolean addRestaurant(Restaurant restaurant) throws RemoteException{
+    public boolean addRestaurant(String nom, String adresse, double latitude, double longitude) throws RemoteException{
         java.sql.Connection connection = null;
         try{
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
 
-            PreparedStatement insertStatement = connection.prepareStatement("insert into restaurants values(?, ?, ?, ?, ?)");
-            insertStatement.setInt(1, restaurant.getId());
-            insertStatement.setString(2, restaurant.getNom());
-            insertStatement.setString(3, restaurant.getAdresse());
-            insertStatement.setDouble(4, restaurant.getLatitude());
-            insertStatement.setDouble(5, restaurant.getLongitude());
+            // Get the last id
+            PreparedStatement insertStatement = connection.prepareStatement("select max(id) from restaurants");
+            ResultSet resultSet = insertStatement.executeQuery();
+            int id = 0;
+            while (resultSet.next()){
+                id = resultSet.getInt(1);
+            }
+            id++;
+
+            insertStatement = connection.prepareStatement("insert into restaurants values(?, ?, ?, ?, ?)");
+            insertStatement.setInt(1, id);
+            insertStatement.setString(2, nom);
+            insertStatement.setString(3, adresse);
+            insertStatement.setDouble(4, latitude);
+            insertStatement.setDouble(5, longitude);
             insertStatement.executeUpdate();
 
             connection.commit();
