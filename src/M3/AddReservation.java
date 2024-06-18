@@ -1,3 +1,13 @@
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 public class AddReservation implements HttpHandler{
     @Override
     public void handle(HttpExchange t) throws IOException {
@@ -39,7 +49,7 @@ public class AddReservation implements HttpHandler{
 
                 // Appeler le service RMI
                 Registry reg = LocateRegistry.getRegistry("localhost", 54680);
-                ServiceReservationInterface service = (ServiceReservationInterface) reg.lookup("M2");
+                ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
 
                 boolean response = service.addReservation(nom, prenom, people, date+time, tel, restaurantName);
                 exchange.sendResponseHeaders(200, response ? 0 : -1);
