@@ -1,11 +1,11 @@
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-public class GetAccident implements HttpHandler {
+public class GetEtabSup implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -22,9 +22,9 @@ public class GetAccident implements HttpHandler {
 
             // Récupération des données
             Registry reg = LocateRegistry.getRegistry("localhost", 54190);
-            ServiceIncidentTraficInterface service = (ServiceIncidentTraficInterface) reg.lookup("siti");
+            ServiceEtabSupInterface service = (ServiceEtabSupInterface) reg.lookup("sesi");
 
-            String response = service.getTrafficIncidents();
+            String response = service.getEtabSup();
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();
             os.write(response.getBytes());
