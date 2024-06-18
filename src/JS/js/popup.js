@@ -1,4 +1,5 @@
 function openReservationPopup(restaurantId, restaurantName) {
+    console.log('Ouverture de la popup de réservation pour le restaurant:', restaurantId, restaurantName);
     document.getElementById('restaurant-name').textContent = restaurantName;
     document.getElementById('restaurant-id').value = restaurantId;
     document.getElementById('reservation-popup').style.display = 'block';
@@ -17,8 +18,10 @@ async function sendReservationData(reservationData) {
             },
             body: JSON.stringify(reservationData)
         });
-        const data = await response.json();
-        return data;
+        if (response.ok) {
+            console.log('Réservation envoyée avec succès.', response.status);
+        }
+        return response.ok;
     } catch (error) {
         console.error('Erreur lors de l\'envoi de la réservation:', error);
         throw error;
@@ -29,10 +32,10 @@ document.getElementById('reservation-form').addEventListener('submit', async fun
     event.preventDefault();
 
     const restaurantId = document.getElementById('restaurant-id').value;
-    const name = document.getElementById('name').value;
+    const nom = document.getElementById('nom').value;
     const prenom = document.getElementById('prenom').value;
     const people = document.getElementById('people').value;
-    const number = document.getElementById('phone').value;
+    const phone = document.getElementById('phone').value;
     const date = document.getElementById('date').value;
     const time = document.getElementById('time').value;
     const restaurantName = document.getElementById('restaurant-name').textContent;
@@ -40,10 +43,10 @@ document.getElementById('reservation-form').addEventListener('submit', async fun
     // Créer un objet avec les données de réservation
     const reservationData = {
         restaurantId: restaurantId,
-        name: name,
+        nom: nom,
         prenom: prenom,
         people: people,
-        number: number,
+        phone: phone,
         date: date,
         time: time,
         restaurantName: restaurantName
@@ -51,7 +54,7 @@ document.getElementById('reservation-form').addEventListener('submit', async fun
 
     try {
         const data = await sendReservationData(reservationData);
-        if (data.success) {
+        if (data) {
             alert('Réservation réussie!');
             closeReservationPopup();
         } else {

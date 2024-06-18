@@ -57,8 +57,8 @@
         <h3>Réserver au <span id="restaurant-name"></span></h3>
         <form id="reservation-form">
             <input type="hidden" id="restaurant-id" name="restaurant-id">
-            <label for="name">Votre nom :</label>
-            <input type="text" id="name" name="name" required>
+            <label for="nom">Votre nom :</label>
+            <input type="text" id="nom" name="nom" required>
             <label for="prenom">Votre prénom :</label>
             <input type="text" id="prenom" name="prenom" required>
             <label for="people">Nombre de personnes :</label>
@@ -74,17 +74,6 @@
     </div>
 </div>
 
-
-<script>
-    function openReservationPopup(id, nom) {
-        document.getElementById('restaurant-name').innerText = nom;
-        document.getElementById('reservation-popup').style.display = 'block';
-    }
-
-    function closeReservationPopup() {
-        document.getElementById('reservation-popup').style.display = 'none';
-    }
-</script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

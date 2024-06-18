@@ -254,5 +254,4 @@ function showAddRestaurantPopup(lat, lon, map) {
                 console.error('Erreur lors de l\'ajout du restaurant:', error);
             });
     });
-
 }

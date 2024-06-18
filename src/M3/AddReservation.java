@@ -10,7 +10,7 @@ import java.rmi.registry.Registry;
 
 public class AddReservation implements HttpHandler{
     @Override
-    public void handle(HttpExchange t) throws IOException {
+    public void handle(HttpExchange exchange) throws IOException {
         try{
             exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
             exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -37,7 +37,7 @@ public class AddReservation implements HttpHandler{
 
                 // Convertir les données en JSON
                 JSONObject json = new JSONObject(sb.toString());
-
+                System.out.println(json.toString());
                 // Extraire les valeurs
                 String nom = json.getString("nom");
                 String prenom = json.getString("prenom");
@@ -45,13 +45,13 @@ public class AddReservation implements HttpHandler{
                 String date = json.getString("date");
                 String time = json.getString("time");
                 String tel = json.getString("phone");
-                String restaurantName = json.getString("restaurantName");
+                int restaurantId = json.getInt("restaurantId");
 
                 // Appeler le service RMI
                 Registry reg = LocateRegistry.getRegistry("localhost", 54680);
                 ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
 
-                boolean response = service.addReservation(nom, prenom, people, date+time, tel, restaurantName);
+                boolean response = service.reserveRestaurant(nom, prenom, people, tel, date, time, restaurantId);
                 exchange.sendResponseHeaders(200, response ? 0 : -1);
                 exchange.getResponseBody().close();
             } else {

@@ -2,19 +2,23 @@ import java.rmi.RemoteException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import org.json.JSONArray;
 
-public class ServiceRestaurant implements ServiceRestaurantInterface{
+public class ServiceRestaurant implements ServiceRestaurantInterface {
 
     public ServiceRestaurant() {
     }
 
     @Override
-    public String getRestaurants()throws RemoteException{
+    public String getRestaurants() throws RemoteException {
         java.sql.Connection connection = null;
-        try{
+        try {
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
 
@@ -23,7 +27,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
             List<Restaurant> restaurants = new ArrayList<>();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int id = resultSet.getInt(1);
                 String nom = resultSet.getString(2);
                 String adresse = resultSet.getString(3);
@@ -40,7 +44,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
             }
 
             return jsonRestaurants.toString();
-        }catch (Exception e){
+        } catch (Exception e) {
             if (connection != null) {
                 try {
                     connection.rollback();
@@ -62,9 +66,9 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public String getRestaurantById(int id) throws RemoteException{
+    public String getRestaurantById(int id) throws RemoteException {
         java.sql.Connection connection = null;
-        try{
+        try {
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
 
@@ -74,7 +78,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
             Restaurant restaurant = null;
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 int idR = resultSet.getInt(1);
                 String nom = resultSet.getString(2);
                 String adresse = resultSet.getString(3);
@@ -85,7 +89,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
             connection.commit();
 
             return restaurant.toJson().toString();
-        }catch (Exception e){
+        } catch (Exception e) {
             if (connection != null) {
                 try {
                     connection.rollback();
@@ -107,9 +111,9 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public boolean addRestaurant(String nom, String adresse, double latitude, double longitude) throws RemoteException{
+    public boolean addRestaurant(String nom, String adresse, double latitude, double longitude) throws RemoteException {
         java.sql.Connection connection = null;
-        try{
+        try {
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
 
@@ -117,7 +121,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
             PreparedStatement insertStatement = connection.prepareStatement("select max(id) from restaurants");
             ResultSet resultSet = insertStatement.executeQuery();
             int id = 0;
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 id = resultSet.getInt(1);
             }
             id++;
@@ -132,7 +136,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
 
             connection.commit();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             if (connection != null) {
                 try {
                     connection.rollback();
@@ -154,24 +158,41 @@ public class ServiceRestaurant implements ServiceRestaurantInterface{
     }
 
     @Override
-    public boolean reserveRestaurant(String nom, String prenom, int nbConvives, String telephone, String date, int restaurantId) throws RemoteException{
+    public boolean reserveRestaurant(String nom, String prenom, int nbConvives, String telephone, String date, String heure, int restaurantId) throws RemoteException {
         java.sql.Connection connection = null;
-        try{
+        try {
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
 
-            PreparedStatement insertStatement = connection.prepareStatement("insert into reservations values(?, ?, ?, ?, ?, ?)");
-            insertStatement.setString(1, nom);
-            insertStatement.setString(2, prenom);
-            insertStatement.setInt(3, nbConvives);
-            insertStatement.setString(4, telephone);
-            insertStatement.setString(5, date);
-            insertStatement.setInt(6, restaurantId);
+
+            String dateTimeString = date + " " + heure;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+            // Conversion de la chaîne en java.sql.Timestamp
+            java.util.Date parsedDate = dateFormat.parse(dateTimeString);
+            Timestamp timestamp = new Timestamp(parsedDate.getTime());
+
+            int id = 0;
+            PreparedStatement selectStatement = connection.prepareStatement("select max(id) from reservations");
+            ResultSet resultSet = selectStatement.executeQuery();
+            while (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+            id++;
+
+            PreparedStatement insertStatement = connection.prepareStatement("insert into reservations values(?, ?, ?, ?, ?, ?, ?)");
+            insertStatement.setInt(1, id);
+            insertStatement.setString(2, nom);
+            insertStatement.setString(3, prenom);
+            insertStatement.setInt(4, nbConvives);
+            insertStatement.setString(5, telephone);
+            insertStatement.setTimestamp(6, timestamp);
+            insertStatement.setInt(7, restaurantId);
             insertStatement.executeUpdate();
 
             connection.commit();
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             if (connection != null) {
                 try {
                     connection.rollback();
