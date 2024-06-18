@@ -4,7 +4,7 @@ package "Naviguateur" {
   [Map de Nancy]
 }
 
-database "Database" {
+database "Base de données" {
   [Restaurants]
   [Reservations]
 }
@@ -29,7 +29,7 @@ node "Services RMI" {
 "Naviguateur" --> "APIs JS" : fetch
 m3 --> m2 : RMI Requests
 m2 --> APIs : API Requests
-m1 --> Database : JDBC Connection
+m1 --> "Base de données" : JDBC Connection
 m3 --> m1 : RMI Requests
 
 @enduml
