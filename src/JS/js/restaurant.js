@@ -42,15 +42,11 @@ class Restaurant {
         restaurants.forEach(restaurant => {
             const marker = L.marker([restaurant.latitude, restaurant.longitude], { icon: customIcon }).addTo(map);
             marker.bindPopup(`
-                <div class="popup-content">
-                    <h3>${restaurant.nom}</h3>
-                    <p>${restaurant.adresse}</p>
-                    <div class="popup-image-container">
-                        <img src="${restaurant.lienImage}" alt="Photo du restaurant">
-                        <button class="reservation-button" onclick="openReservationPopup('${restaurant.id}', '${restaurant.nom}')">Réserver</button>
-                    </div>
-                </div>
-            `);
-        });
+                <h3>${restaurant.nom}</h3>
+                <p>${restaurant.adresse}</p>
+                <img src="${restaurant.lienImage}" alt="Photo du restaurant">
+                <p>${restaurant.longitude} ; ${restaurant.lienImage}</p>
+                 <button class="reservation-button" onclick="openReservationPopup('${restaurant.id}', '${restaurant.nom}')">Réserver</button>
+            `);});
     }
 }
