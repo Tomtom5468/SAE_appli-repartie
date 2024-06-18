@@ -1,28 +1,35 @@
 @startuml
 
-package "Browser" {
-  [Map of Nancy]
+package "Naviguateur" {
+  [Map de Nancy]
 }
 
 database "Database" {
   [Restaurants]
+  [Reservations]
 }
 
-cloud "APIs" {
-  [Traffic Incidents]
+cloud "APIs JS" {
+  [Weather]
   [Velib Stations]
 }
 
-node "RMI Services" {
+cloud "APIs" {
+  [Traffic Incident]
+  [Etablissements Supérieurs]
+}
+
+node "Services RMI" {
   [m1]
   [m2]
   [m3]
 }
 
-Browser <-- m3 : HTTP Requests
+"Naviguateur" --> m3 : HTTP Requests
+"Naviguateur" --> "APIs JS" : fetch
 m3 --> m2 : RMI Requests
 m2 --> APIs : API Requests
 m1 --> Database : JDBC Connection
-m3 <-- m1 : RMI Requests
+m3 --> m1 : RMI Requests
 
 @enduml
