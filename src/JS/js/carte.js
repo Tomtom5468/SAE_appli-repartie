@@ -10,9 +10,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var velibMarkers = [];
     var restaurantMarkers = [];
     var incidentMarkers = [];
+    var etablissementMarkers = [];
     var velibMarkersVisible = false;
     var restaurantMarkersVisible = false;
     var incidentMarkersVisible = false;
+    var etablissementMarkersVisible = false;
 
     fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
         .then(response => response.json())
@@ -144,6 +146,34 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('toggle-incident').parentElement.addEventListener('click', function () {
         incidentMarkersVisible = toggleMarkers(incidentMarkers, incidentMarkersVisible);
     });
+
+
+
+    const apiUrlEtabSup = 'http://localhost:8000/GetEtabSup';
+    Etablissement.fetchEtablissements(apiUrlEtabSup)
+        .then(etablissement => {
+            const customEtablissementIcon = L.icon({
+                iconUrl: '../image/etablissement.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            etablissement.forEach(etablissement => {
+                const marker = L.marker([etablissement.latitude, etablissement.longitude], { icon: customEtablissementIcon });
+                marker.bindPopup(`<h3>${etablissement.nom}</h3><p>${etablissement.adresse}</p><p>${etablissement.type}</p>`);
+                etablissementMarkers.push(marker);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'affichage des restaurants:', error);
+        });
+
+    document.getElementById('toggle-etablissement').parentElement.addEventListener('click', function () {
+        etablissementMarkersVisible = toggleMarkers(etablissementMarkers, etablissementMarkersVisible);
+    });
+
+
+
 
     map.on('click', function(e) {
         var lat = e.latlng.lat;
