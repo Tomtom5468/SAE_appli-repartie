@@ -15,37 +15,56 @@ a:hover {
 }
 
 .top-bar {
-    background-color: #595986 ; /* Couleur de fond de la barre */
+    background-color: #595986; /* Couleur de fond de la barre */
     color: white; /* Couleur du texte */
     padding: 10px; /* Espacement interne */
-    text-align: left; /* Aligner le texte à gauche */
+    text-align: center; /* Aligner le texte au centre */
     position: fixed; /* Position fixe */
     top: 0; /* Alignement au haut */
     width: 100%; /* Pleine largeur */
     z-index: 1000; /* Assure que la barre est au-dessus de tout */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombre pour un effet de profondeur */
     height: 82px;
+    display: flex;
+    justify-content: center; /* Centrer les éléments horizontalement */
+    align-items: center; /* Centrer les éléments verticalement */
 }
+
+.top-bar .button-group {
+    display: flex;
+    align-items: center;
+}
+
 .top-bar button {
-    width: 80px;
     background-color: white; /* Couleur de fond des boutons */
     color: black; /* Couleur du texte des boutons */
     border: none; /* Supprime les bordures */
     padding: 10px 20px; /* Espacement interne des boutons */
-    margin-right: 10px; /* Marge entre les boutons */
     cursor: pointer; /* Curseur au survol */
     border-radius: 5px; /* Bords arrondis */
     transition: background-color 0.3s; /* Transition fluide */
     height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 .top-bar button:hover {
     background-color: #777; /* Couleur de fond des boutons au survol */
 }
+
 .top-bar img {
     width: 40px; /* Largeur de l'image */
     height: auto; /* Garder le ratio hauteur/largeur */
     vertical-align: middle;
 }
+
+.separator {
+    margin: 0 10px; /* Espace autour de la barre verticale */
+    color: white; /* Couleur de la barre verticale */
+    font-size: 1.5em;
+}
+
 #map-container {
     width: 50%; /* Largeur de votre choix */
     height: 60vh; /* Hauteur de votre choix */
@@ -57,10 +76,12 @@ a:hover {
     border-right: 1px solid #ccc; /* Bordure à droite */
     order: 1;
 }
+
 #map {
     width: 100%;
     height: 100%;
 }
+
 #info-box {
     width: 40%; /* Largeur de la boîte d'info */
     height: 60vh; /* Hauteur de la boîte d'info */
@@ -78,12 +99,14 @@ a:hover {
     align-items: center;
     justify-content: center;
 }
+
 #info-box h2 {
     color: #333; /* Couleur du titre */
     font-size: 1.5rem; /* Taille du titre */
     margin-top: 0; /* Supprimer la marge supérieure par défaut */
     text-align: center; /* Centrer le titre */
 }
+
 .info-item {
     display: flex;
     flex-direction: column;
@@ -97,15 +120,18 @@ a:hover {
     width: 80%; /* Largeur des boîtes */
     transition: transform 0.3s, box-shadow 0.3s; /* Transition pour l'animation */
 }
+
 .info-item:hover {
     transform: scale(1.05); /* Agrandir légèrement au survol */
     box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Ajouter une ombre plus prononcée au survol */
 }
+
 .info-icon {
     width: 50px; /* Taille de l'icône */
     height: auto; /* Conserver le ratio */
     cursor: pointer; /* Changement de curseur */
 }
+
 #info-box p {
     color: #666; /* Couleur du texte */
     font-size: 1rem; /* Taille du texte */
@@ -130,7 +156,7 @@ a:hover {
     overflow-y: hidden; /* Pas de défilement horizontal */
     white-space: normal; /* Le texte passe à la ligne suivante */
     display: flex;
-    flex-direction: row; /* Aligner les éléments verticalement */
+    flex-direction: row; /* Aligner les éléments horizontalement */
     justify-content: flex-start;
     align-items: flex-start;
     width: 100%; /* Largeur complète pour éviter le défilement horizontal */
@@ -202,5 +228,45 @@ a:hover {
 }
 
 .popup-form .btn:hover {
+    background-color: #0056b3;
+}
+
+/* Styles pour le popup de réservation */
+.leaflet-popup-content {
+    font-family: "Arial", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.leaflet-popup-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.leaflet-popup-content p {
+    margin: 5px 0;
+}
+
+.popup-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.reservation-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.reservation-button:hover {
     background-color: #0056b3;
 }
