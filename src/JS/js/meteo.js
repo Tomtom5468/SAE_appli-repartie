@@ -38,15 +38,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 const desc = hourData.condition.text;
                 const icon = hourData.condition.icon;
                 forecastHTML += `
-                    <div>
+                    <div data-toggle="tooltip" title="${desc}">
                         <p>${time}</p>
-                        <p><img src="${icon}" alt="Icône météo"> ${temp}°C, ${desc}</p>
+                        <p><img src="${icon}" alt="Icône météo"> ${temp}°C</p>
                     </div>
                 `;
             }
 
             const weatherInfo = document.getElementById('weather-info');
             weatherInfo.innerHTML = forecastHTML;
+
+            // Initialiser les tooltips Bootstrap
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
         })
         .catch(error => {
             console.error('Erreur lors de la récupération de la météo:', error);

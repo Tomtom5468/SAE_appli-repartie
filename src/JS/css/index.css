@@ -95,6 +95,11 @@ a:hover {
     margin: 10px; /* Marge autour de chaque boîte */
     border-radius: 5px; /* Coins arrondis */
     width: 80%; /* Largeur des boîtes */
+    transition: transform 0.3s, box-shadow 0.3s; /* Transition pour l'animation */
+}
+.info-item:hover {
+    transform: scale(1.05); /* Agrandir légèrement au survol */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Ajouter une ombre plus prononcée au survol */
 }
 .info-icon {
     width: 50px; /* Taille de l'icône */

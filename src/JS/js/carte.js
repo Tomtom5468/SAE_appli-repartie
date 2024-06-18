@@ -81,13 +81,17 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Erreur lors du chargement des données des stations Vélib:', error));
 
-    document.getElementById('toggle-velib').addEventListener('click', function () {
-        if (velibMarkersVisible) {
-            velibMarkers.forEach(marker => map.removeLayer(marker));
+    function toggleMarkers(markerArray, visible) {
+        if (visible) {
+            markerArray.forEach(marker => map.removeLayer(marker));
         } else {
-            velibMarkers.forEach(marker => marker.addTo(map));
+            markerArray.forEach(marker => marker.addTo(map));
         }
-        velibMarkersVisible = !velibMarkersVisible;
+        return !visible;
+    }
+
+    document.getElementById('toggle-velib').parentElement.addEventListener('click', function () {
+        velibMarkersVisible = toggleMarkers(velibMarkers, velibMarkersVisible);
     });
 
     const apiUrlRestaurant = 'http://localhost:8000/GetAllResto';
@@ -114,13 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Erreur lors de l\'affichage des restaurants:', error);
         });
 
-    document.getElementById('toggle-restaurant').addEventListener('click', function () {
-        if (restaurantMarkersVisible) {
-            restaurantMarkers.forEach(marker => map.removeLayer(marker));
-        } else {
-            restaurantMarkers.forEach(marker => marker.addTo(map));
-        }
-        restaurantMarkersVisible = !restaurantMarkersVisible;
+    document.getElementById('toggle-restaurant').parentElement.addEventListener('click', function () {
+        restaurantMarkersVisible = toggleMarkers(restaurantMarkers, restaurantMarkersVisible);
     });
 
     const apiUrlIncident = 'http://localhost:8000/GetIncident';
@@ -142,13 +141,8 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Erreur lors de l\'affichage des incidents:', error);
         });
 
-    document.getElementById('toggle-incident').addEventListener('click', function () {
-        if (incidentMarkersVisible) {
-            incidentMarkers.forEach(marker => map.removeLayer(marker));
-        } else {
-            incidentMarkers.forEach(marker => marker.addTo(map));
-        }
-        incidentMarkersVisible = !incidentMarkersVisible;
+    document.getElementById('toggle-incident').parentElement.addEventListener('click', function () {
+        incidentMarkersVisible = toggleMarkers(incidentMarkers, incidentMarkersVisible);
     });
 
     map.on('click', function(e) {
