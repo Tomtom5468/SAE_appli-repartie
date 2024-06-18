@@ -11,16 +11,20 @@ document.getElementById('reservation-form').addEventListener('submit', function 
     event.preventDefault();
 
     const name = document.getElementById('name').value;
+    const prenom = document.getElementById('prenom').value;
+    const people = document.getElementById('people').value;
+    const number = document.getElementById('phone').value;
     const date = document.getElementById('date').value;
     const time = document.getElementById('time').value;
-    const people = document.getElementById('people').value;
     const restaurantName = document.getElementById('restaurant-name').textContent;
     // Créer un objet avec les données de réservation
     const reservationData = {
         name: name,
+        prenom: prenom,
+        people: people,
+        number: number,
         date: date,
         time: time,
-        people: people,
         restaurantName: restaurantName
     };
     // Envoyer les données de réservation à l'API

@@ -1,5 +1,3 @@
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import com.sun.net.httpserver.HttpServer;
 import java.net.InetSocketAddress;
 
@@ -11,6 +9,7 @@ public class LancerM3 {
             server.createContext("/GetAllResto", new GetAllRestaurants());
             server.createContext("/GetOneResto", new GetOneRestaurants());
             server.createContext("/GetIncident",new GetAccident());
+            server.createContext("/GetEtabSup", new GetEtabSup());
             server.createContext("/AddRestaurant", new AddRestaurant());
             server.setExecutor(null); // utilise le gestionnaire par défaut
             server.start();
