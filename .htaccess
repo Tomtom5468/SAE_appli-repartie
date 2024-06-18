@@ -8,7 +8,12 @@ RewriteBase /www/micheli17u/SAE-projet-repartie
 
 #
 # Pour interdire l'accès aux sous-répertoires contenant du code
-# -> ~/www/repertoire-projet/src
+# -> ~/www/repertoire-projet/src/M1
+# -> ~/www/repertoire-projet/src/M2
+# -> ~/www/repertoire-projet/src/M3
+# -> ~/www/repertoire-projet/JS/js
+# -> ~/www/repertoire-projet/JS/css
+# -> ~/www/repertoire-projet/JS/image
 # -> ~/www/repertoire-projet/sql
 # -> etc...
 RewriteRule ^src/receipBD(/.*|)$ - [NC,F]

@@ -1,72 +1,72 @@
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.json.JSONObject;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AddRestaurant implements HttpHandler {
-    @Override
+    public AddRestaurant() {
+    }
+
     public void handle(HttpExchange exchange) throws IOException {
         try {
+            // Ajout des headers CORS
             exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
             exchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             exchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-            // Gérer la requête OPTIONS (pré-vérification CORS)
             if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);
                 return;
             }
 
-            // Vérifier si la méthode est POST
-            if ("POST".equals(exchange.getRequestMethod())) {
+            if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
                 // Lire le corps de la requête
                 InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
                 BufferedReader br = new BufferedReader(isr);
-                StringBuilder sb = new StringBuilder();
+                StringBuilder requestBody = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
-                    sb.append(line);
+                    requestBody.append(line);
                 }
                 br.close();
                 isr.close();
 
-                // Convertir les données en JSON
-                JSONObject json = new JSONObject(sb.toString());
+                // Convertir le corps de la requête en JSONObject
+                JSONObject jsonRequest = new JSONObject(requestBody.toString());
+                String nom = jsonRequest.getString("nom");
+                String adresse = jsonRequest.getString("adresse");
+                double latitude = jsonRequest.getDouble("latitude");
+                double longitude = jsonRequest.getDouble("longitude");
 
-                // Extraire les valeurs
-                String nom = json.getString("nom");
-                String adresse = json.getString("adresse");
-                double latitude = json.getDouble("latitude");
-                double longitude = json.getDouble("longitude");
-                
-                // Afficher les valeurs
-                System.out.println("nom: " + nom);
-                System.out.println("adresse: " + adresse);
-                System.out.println("latitude: " + latitude);
-                System.out.println("longitude: " + longitude);
+                // Appel du service pour ajouter le restaurant
+                Registry registry = LocateRegistry.getRegistry("localhost", 54680);
+                ServiceRestaurantInterface service = (ServiceRestaurantInterface) registry.lookup("M1");
+                boolean success = service.addRestaurant(nom, adresse, latitude, longitude);
 
-                // Appeler le service RMI
-                Registry reg = LocateRegistry.getRegistry("localhost", 54680);
-                ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
+                // Préparer la réponse JSON
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("success", success);
+                jsonResponse.put("message", success ? "Restaurant ajouté avec succès" : "Échec de l'ajout du restaurant");
 
-                boolean response = service.addRestaurant(nom, adresse, latitude, longitude);
-                exchange.sendResponseHeaders(200, response ? 0 : -1);
-                exchange.getResponseBody().close();
+                // Envoi de la réponse
+                String response = jsonResponse.toString();
+                byte[] responseBytes = response.getBytes("UTF-8");
+                exchange.getResponseHeaders().set("Content-Type", "application/json");
+                exchange.sendResponseHeaders(success ? 200 : 500, responseBytes.length);
+                OutputStream os = exchange.getResponseBody();
+                os.write(responseBytes);
+                os.close();
             } else {
-                // Méthode non supportée
                 exchange.sendResponseHeaders(405, -1);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            exchange.sendResponseHeaders(500, -1);
         }
     }
 }

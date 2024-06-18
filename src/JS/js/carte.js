@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var incidentMarkersVisible = false;
     var etablissementMarkersVisible = false;
 
+    // Charger les données des stations Vélib
     fetch('https://transport.data.gouv.fr/gbfs/nancy/gbfs.json')
         .then(response => response.json())
         .then(data => {
@@ -227,21 +228,31 @@ function showAddRestaurantPopup(lat, lon, map) {
                 'Content-Type': 'application/json'
             }
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Échec de la réponse du serveur');
+                }
+                return response.json();
+            })
             .then(data => {
-                alert('Restaurant ajouté avec succès');
-                map.closePopup();
-                const apiUrl = 'http://localhost:8000/GetAllResto';
-                Restaurant.fetchRestaurants(apiUrl)
-                    .then(restaurants => {
-                        Restaurant.displayRestaurants(map, restaurants);
-                    })
-                    .catch(error => {
-                        console.error('Erreur lors de l\'affichage des restaurants:', error);
-                    });
+                if (data.success) {
+                    alert(data.message);
+                    map.closePopup();
+                    const apiUrl = 'http://localhost:8000/GetAllResto';
+                    Restaurant.fetchRestaurants(apiUrl)
+                        .then(restaurants => {
+                            Restaurant.displayRestaurants(map, restaurants);
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors de l\'affichage des restaurants:', error);
+                        });
+                } else {
+                    alert(data.message);
+                }
             })
             .catch(error => {
                 console.error('Erreur lors de l\'ajout du restaurant:', error);
             });
     });
+
 }
