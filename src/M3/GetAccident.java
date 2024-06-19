@@ -22,7 +22,7 @@ public class GetAccident implements HttpHandler {
 
             // Récupération des données
             Registry reg = LocateRegistry.getRegistry("localhost", 54190);
-            ServiceIncidentTraficInterface service = (ServiceIncidentTraficInterface) reg.lookup("siti");
+            ServiceDonneesBloqueesInterface service = (ServiceDonneesBloqueesInterface) reg.lookup("M2");
 
             String response = service.getTrafficIncidents();
             exchange.sendResponseHeaders(200, response.getBytes().length);

@@ -22,7 +22,7 @@ public class GetEtabSup implements HttpHandler {
 
             // Récupération des données
             Registry reg = LocateRegistry.getRegistry("localhost", 54190);
-            ServiceEtabSupInterface service = (ServiceEtabSupInterface) reg.lookup("sesi");
+            ServiceDonneesBloqueesInterface service = (ServiceDonneesBloqueesInterface) reg.lookup("M2");
 
             String response = service.getEtabSup();
             exchange.sendResponseHeaders(200, response.getBytes().length);

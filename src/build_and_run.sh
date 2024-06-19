@@ -30,9 +30,8 @@ echo "Compilation du module M2"
 javac *.java
 
 # Copie de ServiceEtabSupInterface.class et ServiceIncidentTraficInterface.class vers M3
-echo "Copie de ServiceEtabSupInterface.class et ServiceIncidentTraficInterface.class vers M3"
-cp ServiceEtabSupInterface.class ../M3
-cp ServiceIncidentTraficInterface.class ../M3
+echo "Copie de ServiceDonneesBloqueesInterface.class vers M3"
+cp ServiceDonneesBloqueesInterface.class ../M3
 
 
 # Compilation du module M3
