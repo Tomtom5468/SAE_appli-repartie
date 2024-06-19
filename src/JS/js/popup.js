@@ -2,6 +2,27 @@ function openReservationPopup(restaurantId, restaurantName) {
     console.log('Ouverture de la popup de réservation pour le restaurant:', restaurantId, restaurantName);
     document.getElementById('restaurant-name').textContent = restaurantName;
     document.getElementById('restaurant-id').value = restaurantId;
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').min = today;
+    document.getElementById('date').value = today;
+    document.getElementById('time').value = '19:00';
+    document.getElementById('people').value = '1';
+    document.getElementById('time').addEventListener('input', function (e) {
+        let value = e.target.value;
+        if (!isValidTime(value)) {
+            e.target.setCustomValidity("Veuillez choisir une heure entre 11h et 14h ou entre 18h et 00h");
+        } else {
+            e.target.setCustomValidity("");
+        }
+    });
+
+    function isValidTime(value) {
+        let [hours, minutes] = value.split(':').map(Number);
+        if ((hours >= 11 && hours < 14) || (hours >= 18 && hours < 24) || (hours === 0 && minutes === 0)) {
+            return true;
+        }
+        return false;
+    }
     document.getElementById('reservation-popup').style.display = 'block';
 }
 
