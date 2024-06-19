@@ -5,8 +5,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 
 import org.json.JSONArray;
 
@@ -33,7 +33,8 @@ public class ServiceRestaurant implements ServiceRestaurantInterface {
                 String adresse = resultSet.getString(3);
                 double latitude = resultSet.getDouble(4);
                 double longitude = resultSet.getDouble(5);
-                Restaurant restaurant = new Restaurant(id, nom, adresse, latitude, longitude);
+                String lienImage = resultSet.getString(6);
+                Restaurant restaurant = new Restaurant(id, nom, adresse, latitude, longitude, lienImage);
                 restaurants.add(restaurant);
             }
             connection.commit();
@@ -84,7 +85,8 @@ public class ServiceRestaurant implements ServiceRestaurantInterface {
                 String adresse = resultSet.getString(3);
                 double latitude = resultSet.getDouble(4);
                 double longitude = resultSet.getDouble(5);
-                restaurant = new Restaurant(idR, nom, adresse, latitude, longitude);
+                String lienImage = resultSet.getString(6);
+                restaurant = new Restaurant(idR, nom, adresse, latitude, longitude, lienImage);
             }
             connection.commit();
 
@@ -111,7 +113,7 @@ public class ServiceRestaurant implements ServiceRestaurantInterface {
     }
 
     @Override
-    public boolean addRestaurant(String nom, String adresse, double latitude, double longitude) throws RemoteException {
+    public boolean addRestaurant(String nom, String adresse, double latitude, double longitude, String lienImage) throws RemoteException {
         java.sql.Connection connection = null;
         try {
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
@@ -126,12 +128,13 @@ public class ServiceRestaurant implements ServiceRestaurantInterface {
             }
             id++;
 
-            insertStatement = connection.prepareStatement("insert into restaurants values(?, ?, ?, ?, ?)");
+            insertStatement = connection.prepareStatement("insert into restaurants values(?, ?, ?, ?, ?, ?)");
             insertStatement.setInt(1, id);
             insertStatement.setString(2, nom);
             insertStatement.setString(3, adresse);
             insertStatement.setDouble(4, latitude);
             insertStatement.setDouble(5, longitude);
+            insertStatement.setString(6, lienImage);
             insertStatement.executeUpdate();
 
             connection.commit();
@@ -164,13 +167,8 @@ public class ServiceRestaurant implements ServiceRestaurantInterface {
             connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
             connection.setAutoCommit(false);
 
-
-            String dateTimeString = date + " " + heure;
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-            // Conversion de la chaîne en java.sql.Timestamp
-            java.util.Date parsedDate = dateFormat.parse(dateTimeString);
-            Timestamp timestamp = new Timestamp(parsedDate.getTime());
+            Timestamp timestamp = getTimestamp(date, heure);
+            Timestamp reservationEndTimestamp = new Timestamp(timestamp.getTime() + 60 * 60 * 1000);
 
             int id = 0;
             PreparedStatement selectStatement = connection.prepareStatement("select max(id) from reservations");
@@ -180,14 +178,15 @@ public class ServiceRestaurant implements ServiceRestaurantInterface {
             }
             id++;
 
-            PreparedStatement insertStatement = connection.prepareStatement("insert into reservations values(?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement insertStatement = connection.prepareStatement("insert into reservations values(?, ?, ?, ?, ?, ?, ?, ?)");
             insertStatement.setInt(1, id);
             insertStatement.setString(2, nom);
             insertStatement.setString(3, prenom);
             insertStatement.setInt(4, nbConvives);
             insertStatement.setString(5, telephone);
             insertStatement.setTimestamp(6, timestamp);
-            insertStatement.setInt(7, restaurantId);
+            insertStatement.setTimestamp(7, reservationEndTimestamp);
+            insertStatement.setInt(8, restaurantId);
             insertStatement.executeUpdate();
 
             connection.commit();
@@ -211,6 +210,63 @@ public class ServiceRestaurant implements ServiceRestaurantInterface {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean isRestaurantAvailable(String date, String heure, int restaurantId) throws RemoteException {
+        java.sql.Connection connection = null;
+        try {
+            connection = Connection.getConnection(BD.USERNAME, BD.PASSWORD);
+            connection.setAutoCommit(false);
+
+            Timestamp timestamp = getTimestamp(date, heure);
+
+            Timestamp reservationEndTimestamp = new Timestamp(timestamp.getTime() + 60 * 60 * 1000);
+
+
+            // On vérifie si le restaurant est disponible  à la date et heure demandée (pas de réservation en cours)
+            PreparedStatement selectStatement = connection.prepareStatement("select * from reservations where restaurant_id = ? and (reservation_date <= ? and reservation_date_fin> ?) or (reservation_date < ? and reservation_date_fin> ?)");
+            selectStatement.setInt(1, restaurantId);
+            selectStatement.setTimestamp(2, timestamp);
+            selectStatement.setTimestamp(3, timestamp);
+            selectStatement.setTimestamp(4, reservationEndTimestamp);
+            selectStatement.setTimestamp(5, reservationEndTimestamp);
+
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            boolean isAvailable = true;
+            while (resultSet.next()) {
+                isAvailable = false;
+            }
+            connection.commit();
+            return isAvailable;
+        } catch (Exception e) {
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error during rollback " + ex.getMessage());
+                }
+            }
+            System.out.println("Error during transaction " + e.getMessage());
+            return false;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error during connection close " + ex.getMessage());
+                }
+            }
+        }
+    }
+
+    private Timestamp getTimestamp(String date, String heure) throws Exception {
+        String dateTimeString = date + " " + heure;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        Date parsedDate = dateFormat.parse(dateTimeString);
+        return new Timestamp(parsedDate.getTime());
     }
 
 }

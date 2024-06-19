@@ -18,10 +18,7 @@ async function sendReservationData(reservationData) {
             },
             body: JSON.stringify(reservationData)
         });
-        if (response.ok) {
-            console.log('Réservation envoyée avec succès.', response.status);
-        }
-        return response.ok;
+        return response.status;
     } catch (error) {
         console.error('Erreur lors de l\'envoi de la réservation:', error);
         throw error;
@@ -54,9 +51,13 @@ document.getElementById('reservation-form').addEventListener('submit', async fun
 
     try {
         const data = await sendReservationData(reservationData);
-        if (data) {
+        if (data === 200) {
             alert('Réservation réussie!');
+            document.getElementById('reservation-form').reset();
             closeReservationPopup();
+        } else if (data === 912) {
+            alert('Le restaurant est complet pour cette date et heure.');
+            console.error('Le restaurant est complet pour cette date et heure.');
         } else {
             alert('Erreur lors de la réservation: ' + data.message);
         }

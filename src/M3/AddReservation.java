@@ -37,7 +37,6 @@ public class AddReservation implements HttpHandler{
 
                 // Convertir les données en JSON
                 JSONObject json = new JSONObject(sb.toString());
-                System.out.println(json.toString());
                 // Extraire les valeurs
                 String nom = json.getString("nom");
                 String prenom = json.getString("prenom");
@@ -50,7 +49,14 @@ public class AddReservation implements HttpHandler{
                 // Appeler le service RMI
                 Registry reg = LocateRegistry.getRegistry("localhost", 54680);
                 ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
-
+                boolean test = service.isRestaurantAvailable(date, time, restaurantId);
+                if(!test){
+                    System.out.println("Restaurant non disponible");
+                    // On renvoie une errreur si le restaurant n'est pas disponible
+                    exchange.sendResponseHeaders(912, -1);
+                    exchange.getResponseBody().close();
+                    return;
+                }
                 boolean response = service.reserveRestaurant(nom, prenom, people, tel, date, time, restaurantId);
                 exchange.sendResponseHeaders(200, response ? 0 : -1);
                 exchange.getResponseBody().close();

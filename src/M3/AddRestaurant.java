@@ -42,11 +42,12 @@ public class AddRestaurant implements HttpHandler {
                 String adresse = jsonRequest.getString("adresse");
                 double latitude = jsonRequest.getDouble("latitude");
                 double longitude = jsonRequest.getDouble("longitude");
+                String lienImage = jsonRequest.getString("lienImage");
 
                 // Appel du service pour ajouter le restaurant
                 Registry registry = LocateRegistry.getRegistry("localhost", 54680);
                 ServiceRestaurantInterface service = (ServiceRestaurantInterface) registry.lookup("M1");
-                boolean success = service.addRestaurant(nom, adresse, latitude, longitude);
+                boolean success = service.addRestaurant(nom, adresse, latitude, longitude, lienImage);
 
                 // Préparer la réponse JSON
                 JSONObject jsonResponse = new JSONObject();

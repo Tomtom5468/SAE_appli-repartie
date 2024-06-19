@@ -111,8 +111,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 marker.bindPopup(`
                     <h3>${restaurant.nom}</h3>
                     <p>${restaurant.adresse}</p>
-                    <img src="${restaurant.lienImage}" alt="Photo du restaurant">
-                    <button class="reservation-button" onclick="openReservationPopup('${restaurant.id}', '${restaurant.nom}')">Réserver</button>
+                    <img src="${restaurant.lienImage}" alt="Photo du restaurant" height="100px" width="100px">
+                    <button class="reservation-button" onclick="openReservationPopup('${restaurant.id}', '${restaurant.nom.replace(/'/g, "\\'")}')">Réserver</button>
                 `);
                 restaurantMarkers.push(marker);
             });
@@ -203,6 +203,10 @@ function showAddRestaurantPopup(lat, lon, map) {
                 <label for="latitude">Latitude :</label>
                 <input type="text" class="form-control" id="latitude" name="latitude" value="${lat}" readonly>
             </div>
+            <div class="form-group">
+                <label for="image">Image :</label>
+                <input type="text" class="form-control" id="image" name="image" required>
+            </div>
             <button type="submit" class="btn btn-primary">Ajouter</button>
         </form>
     `;
@@ -222,7 +226,8 @@ function showAddRestaurantPopup(lat, lon, map) {
                 nom: formData.get('nom'),
                 adresse: formData.get('adresse'),
                 latitude: formData.get('latitude'),
-                longitude: formData.get('longitude')
+                longitude: formData.get('longitude'),
+                lienImage: formData.get('image')
             }),
             headers: {
                 'Content-Type': 'application/json'
