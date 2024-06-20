@@ -29,9 +29,9 @@ function closeReservationPopup() {
     document.getElementById('reservation-popup').style.display = 'none';
 }
 
-async function sendReservationData(reservationData) {
+async function sendReservationData(reservationData, host) {
     try {
-        const response = await fetch('http://localhost:8000/AddReservation', {
+        const response = await fetch(`http://${host}:8000/AddReservation`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ document.getElementById('reservation-form').addEventListener('submit', async fun
     };
 
     try {
-        const data = await sendReservationData(reservationData);
+        const data = await sendReservationData(reservationData, '100.64.80.211');
         if (data === 200) {
             alert('Réservation réussie!');
             document.getElementById('reservation-form').reset();

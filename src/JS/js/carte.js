@@ -97,7 +97,9 @@ document.addEventListener('DOMContentLoaded', function () {
         velibMarkersVisible = toggleMarkers(velibMarkers, velibMarkersVisible);
     });
 
-    const apiUrlRestaurant = 'http://localhost:8000/GetAllResto';
+    let host = '100.64.80.211';
+
+    const apiUrlRestaurant = `http://${host}:8000/GetAllResto`;
     Restaurant.fetchRestaurants(apiUrlRestaurant)
         .then(restaurants => {
             const customRestaurantIcon = L.icon({
@@ -125,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         restaurantMarkersVisible = toggleMarkers(restaurantMarkers, restaurantMarkersVisible);
     });
 
-    const apiUrlIncident = 'http://localhost:8000/GetIncident';
+    const apiUrlIncident = `http://${host}:8000/GetIncident`;
     Incident.fetchIncidents(apiUrlIncident)
         .then(incidents => {
             const customIncidentIcon = L.icon({
@@ -150,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    const apiUrlEtabSup = 'http://localhost:8000/GetEtabSup';
+    const apiUrlEtabSup = `http://${host}:8000/GetEtabSup`;
     Etablissement.fetchEtablissements(apiUrlEtabSup)
         .then(etablissement => {
             const customEtablissementIcon = L.icon({
@@ -220,7 +222,7 @@ function showAddRestaurantPopup(lat, lon, map) {
     document.getElementById('add-restaurant-form').addEventListener('submit', function(event) {
         event.preventDefault();
         var formData = new FormData(event.target);
-        fetch('http://localhost:8000/AddRestaurant', {
+        fetch(`http://${host}:8000/AddRestaurant`, {
             method: 'POST',
             body: JSON.stringify({
                 nom: formData.get('nom'),
@@ -243,7 +245,7 @@ function showAddRestaurantPopup(lat, lon, map) {
                 if (data.success) {
                     alert(data.message);
                     map.closePopup();
-                    const apiUrl = 'http://localhost:8000/GetAllResto';
+                    const apiUrl = `http://${host}:8000/GetAllResto`;
                     Restaurant.fetchRestaurants(apiUrl)
                         .then(restaurants => {
                             Restaurant.displayRestaurants(map, restaurants);
