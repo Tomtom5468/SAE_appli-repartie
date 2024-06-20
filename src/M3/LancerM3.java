@@ -19,12 +19,12 @@ public class LancerM3 {
 
 
 
-            server.createContext("/GetAllResto", new GetAllRestaurants(host2));
-            server.createContext("/GetOneResto", new GetOneRestaurants(host2));
-            server.createContext("/GetIncident",new GetAccident(host1));
-            server.createContext("/GetEtabSup", new GetEtabSup(host1));
-            server.createContext("/AddRestaurant", new AddRestaurant(host2));
-            server.createContext("/AddReservation", new AddReservation(host2));
+            server.createContext("/GetAllResto", new GetAllRestaurants(host1));
+            server.createContext("/GetOneResto", new GetOneRestaurants(host1));
+            server.createContext("/GetIncident",new GetAccident(host2));
+            server.createContext("/GetEtabSup", new GetEtabSup(host2));
+            server.createContext("/AddRestaurant", new AddRestaurant(host1));
+            server.createContext("/AddReservation", new AddReservation(host1));
             server.setExecutor(null); // utilise le gestionnaire par défaut
             server.start();
             System.out.println("Server started on port 8000");
