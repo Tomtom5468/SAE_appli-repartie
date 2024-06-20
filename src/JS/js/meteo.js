@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const apiKey = '9b9f861f6bbf46c294a132227241106'; // Remplacez par votre clé API WeatherAPI
+    const apiKey = '9b9f861f6bbf46c294a132227241106';
     const city = 'Nancy';
-    const url = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&lang=fr&days=1&hourly=24`;
+    const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&lang=fr&days=1&hourly=24`;
 
     fetch(url)
         .then(response => {
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Météo actuelle
             const currentTemperature = data.current.temp_c;
             const currentDescription = data.current.condition.text;
-            const currentIcon = data.current.condition.icon;
+            const currentIcon = data.current.condition.icon.replace('http:', 'https:');
 
             const currentWeatherHTML = `
                 <h3>Météo actuelle</h3>
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const time = hourData.time.split(' ')[1]; // Extraire l'heure
                 const temp = hourData.temp_c;
                 const desc = hourData.condition.text;
-                const icon = hourData.condition.icon;
+                const icon = hourData.condition.icon.replace('http:', 'https:');
                 forecastHTML += `
                     <div data-toggle="tooltip" title="${desc}">
                         <p>${time}</p>
