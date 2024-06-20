@@ -8,6 +8,13 @@ import java.util.List;
 
 class GetAllRestaurants implements HttpHandler {
 
+        private String host;
+
+    public GetAllRestaurants(String host){
+        this.host = host;
+    }
+
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -23,7 +30,7 @@ class GetAllRestaurants implements HttpHandler {
             }
 
             // Récupération des données
-            Registry reg = LocateRegistry.getRegistry("localhost", 54680);
+            Registry reg = LocateRegistry.getRegistry(this.host, 54680);
             ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
             
             String response = service.getRestaurants();

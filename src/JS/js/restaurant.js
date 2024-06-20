@@ -35,7 +35,7 @@ class Restaurant {
             marker.bindPopup(`
                 <h3>${restaurant.nom}</h3>
                 <p>${restaurant.adresse}</p>
-                <img src="${restaurant.lienImage}" alt="Photo du restaurant" style="20px 20px">
+                <img src="${restaurant.lienImage}" alt="Photo du restaurant" height="100px" width="100px">
                 <button class="reservation-button" onclick="openReservationPopup('${restaurant.id}', '${restaurant.nom.replace(/'/g, "\\'")}')">Réserver</button>
             `);
         });

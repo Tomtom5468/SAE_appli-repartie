@@ -6,6 +6,13 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class GetAccident implements HttpHandler {
+
+        private String host;
+
+    public GetAccident(String host){
+        this.host = host;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -21,9 +28,8 @@ public class GetAccident implements HttpHandler {
             }
 
             // Récupération des données
-            Registry reg = LocateRegistry.getRegistry("localhost", 54190);
+            Registry reg = LocateRegistry.getRegistry(this.host, 54190);
             ServiceDonneesBloqueesInterface service = (ServiceDonneesBloqueesInterface) reg.lookup("M2");
-
             String response = service.getTrafficIncidents();
             exchange.sendResponseHeaders(200, response.getBytes().length);
             OutputStream os = exchange.getResponseBody();

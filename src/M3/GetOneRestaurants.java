@@ -6,6 +6,13 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class GetOneRestaurants implements HttpHandler{
+
+    private String host;
+
+    public GetOneRestaurants(String host){
+        this.host = host;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try{
@@ -26,7 +33,7 @@ public class GetOneRestaurants implements HttpHandler{
                 }
             }
             
-            Registry reg = LocateRegistry.getRegistry("localhost", 54680);
+            Registry reg = LocateRegistry.getRegistry(this.host, 54680);
             ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
 
             String response = service.getRestaurantById(id);

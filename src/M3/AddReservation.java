@@ -9,6 +9,13 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class AddReservation implements HttpHandler{
+
+    private String host;
+
+    public AddReservation(String host){
+        this.host = host;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try{
@@ -47,7 +54,7 @@ public class AddReservation implements HttpHandler{
                 int restaurantId = json.getInt("restaurantId");
 
                 // Appeler le service RMI
-                Registry reg = LocateRegistry.getRegistry("localhost", 54680);
+                Registry reg = LocateRegistry.getRegistry(this.host, 54680);
                 ServiceRestaurantInterface service = (ServiceRestaurantInterface) reg.lookup("M1");
                 boolean test = service.isRestaurantAvailable(date, time, restaurantId);
                 if(!test){

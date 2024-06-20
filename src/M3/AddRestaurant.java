@@ -9,8 +9,13 @@ import java.rmi.registry.Registry;
 import org.json.JSONObject;
 
 public class AddRestaurant implements HttpHandler {
-    public AddRestaurant() {
+
+    private String host;
+
+    public AddRestaurant(String host){
+        this.host = host;
     }
+
 
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -45,7 +50,7 @@ public class AddRestaurant implements HttpHandler {
                 String lienImage = jsonRequest.getString("lienImage");
 
                 // Appel du service pour ajouter le restaurant
-                Registry registry = LocateRegistry.getRegistry("localhost", 54680);
+                Registry registry = LocateRegistry.getRegistry(this.host, 54680);
                 ServiceRestaurantInterface service = (ServiceRestaurantInterface) registry.lookup("M1");
                 boolean success = service.addRestaurant(nom, adresse, latitude, longitude, lienImage);
 

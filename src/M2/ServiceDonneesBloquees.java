@@ -2,6 +2,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.ProxySelector;
+import java.net.InetSocketAddress;
 import java.rmi.RemoteException;
 
 public class ServiceDonneesBloquees implements ServiceDonneesBloqueesInterface{
@@ -21,7 +23,8 @@ public class ServiceDonneesBloquees implements ServiceDonneesBloqueesInterface{
 
     private String fetchData(String urlString) throws RemoteException {
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = HttpClient.newBuilder()
+                    .proxy(ProxySelector.of(new InetSocketAddress("www-cache.iutnc.univ-lorraine.fr", 3128))).build();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(urlString))
                     .header("Accept", "application/json")
