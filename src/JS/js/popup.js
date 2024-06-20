@@ -1,5 +1,4 @@
 function openReservationPopup(restaurantId, restaurantName) {
-    console.log('Ouverture de la popup de réservation pour le restaurant:', restaurantId, restaurantName);
     document.getElementById('restaurant-name').textContent = restaurantName;
     document.getElementById('restaurant-id').value = restaurantId;
     let today = new Date().toISOString().split('T')[0];
